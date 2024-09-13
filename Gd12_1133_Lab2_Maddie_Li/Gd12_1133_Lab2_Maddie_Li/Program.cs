@@ -4,11 +4,9 @@
     {
         static void Main(string[] args)
         {
-            // instantiating GameManager as manager
-            GameManager manager = new GameManager();
-
-            // calling introduction
-            manager.Intro();
+            // instantiating for Intro
+            AssignmentText assignment = new AssignmentText();
+            assignment.Intro();
 
         }
 

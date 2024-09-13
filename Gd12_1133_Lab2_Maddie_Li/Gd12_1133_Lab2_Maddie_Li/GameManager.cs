@@ -15,18 +15,11 @@ namespace Gd12_1133_Lab2_Maddie_Li
         int scoreTotal = 0;
 
         List<int> results = new List<int>();
-
-        internal void Intro()
-        {
-            // intro text
-            Console.WriteLine("Welcome to Maddie Li's Lab 2 (2024-09-13)");
-            Play();
-        }
     
-        private void Play()
+        internal void Play()
         {
 
-            // instantiating DieRoller
+            // instantiating for dieRoller
             DieRoller dieRoller = new DieRoller();
 
             Console.WriteLine("This is the Dice Roller!");
@@ -47,14 +40,18 @@ namespace Gd12_1133_Lab2_Maddie_Li
 
         private void EndGame() 
         { 
-             
+              // add each result
               foreach (int result in results)
               {
                  scoreTotal += result;
               }
 
               Console.WriteLine(scoreTotal.ToString());
-             
+
+            // instantiating for outro
+            AssignmentText assignment = new AssignmentText();
+            assignment.Outro();
+
         }
         
 
