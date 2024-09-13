@@ -13,7 +13,7 @@ namespace GD12_1133_Lab1_Maddie_Li
 
             foreach (int x in Enumerable.Range(0,3)) //I feel like it should be range 0,2 but it didn't print the last one when I did that. So I changed the range, but I don't know why
             {
-                Console.WriteLine("\n\n" + info[x, 0] + " counts in base " + info[x, 1] + " using the symbols of " + info[x, 2] + ".\nThis means if you reach the value of " + info[x, 1] + " in a space (represented by the symbol " + info[x, 3] + ") the counting moves over to the next position.\n");
+                Console.WriteLine("\n\n" + info[x, 0] + " counts in base " + info[x, 1] + " using the symbols of " + info[x, 2] + ".\nThis means if you reach the value of " + info[x, 1] + " in a space, the counting moves over to the next position.\n");
 
 
                 List<int> numberslist = new List<int>()
