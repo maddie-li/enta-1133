@@ -23,6 +23,7 @@ namespace Gd12_1133_Lab2_Maddie_Li
             DieRoller dieRoller = new DieRoller();
 
             Console.WriteLine("This is the Dice Roller!");
+            Console.WriteLine($"Rolling: {diceAmount}d{sidesInput}\n");
 
             // roll diceAmount times
             foreach (int x in Enumerable.Range(1, diceAmount))
@@ -46,7 +47,8 @@ namespace Gd12_1133_Lab2_Maddie_Li
                  scoreTotal += result;
               }
 
-              Console.WriteLine(scoreTotal.ToString());
+            Console.WriteLine($"\nTotal of {diceAmount} rolls:");
+            Console.WriteLine(scoreTotal.ToString());
 
             // instantiating for outro
             AssignmentText assignment = new AssignmentText();

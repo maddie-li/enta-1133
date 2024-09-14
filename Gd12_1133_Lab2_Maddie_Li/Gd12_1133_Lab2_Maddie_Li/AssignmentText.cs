@@ -14,13 +14,15 @@ namespace Gd12_1133_Lab2_Maddie_Li
             GameManager manager = new GameManager();
 
             // intro text
-            Console.WriteLine("Welcome to Maddie Li's Lab 2 (2024-09-13)");
+            Console.WriteLine("Welcome to Maddie Li's Lab 2 (2024-09-13)\n");
             manager.Play();
         }
 
         internal void Outro()
         {
             // outro text
+            Console.WriteLine();
+
             Console.WriteLine("+ is add");
             Console.WriteLine("- is subtract");
             Console.WriteLine("/ is divide");
@@ -28,6 +30,8 @@ namespace Gd12_1133_Lab2_Maddie_Li
             Console.WriteLine("++ is add 1");
             Console.WriteLine("-- is subtract 1");
             Console.WriteLine("% is divide but it returns the remainder");
+
+            Console.WriteLine();
 
             Console.WriteLine("Goodbye!");
 
