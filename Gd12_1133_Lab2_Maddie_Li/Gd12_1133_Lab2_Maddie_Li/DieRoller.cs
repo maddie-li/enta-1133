@@ -13,6 +13,11 @@ namespace Gd12_1133_Lab2_Maddie_Li
 
         internal void Roll(int sides)
         {
+
+            // because range should include highest number
+            sides += 1;
+
+            // random number in range
             int output = random.Next(1,sides);
 
             Console.WriteLine(output);
