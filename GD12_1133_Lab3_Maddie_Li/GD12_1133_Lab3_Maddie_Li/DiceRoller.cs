@@ -19,7 +19,6 @@ namespace GD12_1133_Lab3_Maddie_Li
             // random number in range
             int output = random.Next(1, sides);
 
-            Console.WriteLine(output);
             return output;
         }
 

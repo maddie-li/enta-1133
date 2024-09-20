@@ -43,12 +43,14 @@ namespace GD12_1133_Lab3_Maddie_Li
             Console.WriteLine($"\nIn this game, you each have {numOfRounds} dice of different values, but you can only use each die once.");
             Console.WriteLine("Every round, you and your opponent will choose a die and roll against each other.");
             Console.WriteLine("Whoever rolls highest gains points equal to the combined number of sides.");
-            Console.WriteLine($"This goes on for {numOfRounds} rounds, then the one with the highest points wins!.");
+            Console.WriteLine($"This goes on for {numOfRounds} rounds, then the one with the highest points wins!");
 
             GameRound("1");
             GameRound("2");
             GameRound("3");
             GameRound("4");
+
+            GameEnd();
 
         }
 
@@ -69,29 +71,52 @@ namespace GD12_1133_Lab3_Maddie_Li
             int p2_roll = roll.Roll(p2_selection);
             bankedScore += p2_selection;
 
-            // comparescore(p1score, p2score)
-            Console.WriteLine("\nBoth players have rolled!\n");
-            Console.WriteLine($"\nThe banked score is {bankedScore}!\n");
+            // start compare
+            Console.WriteLine("\nBoth players have rolled!");
+            Console.WriteLine($"{p1.name} rolled {p1_roll}\n{p2.name} rolled {p2_roll}");
 
+            // compare score
+            if (p1_roll > p2_roll)
+            {
+                p1.score += bankedScore;
+                Console.WriteLine($"\n{p1.name} won this round and gains {bankedScore} points!");
+            }
+            else if (p1_roll < p2_roll)
+            {
+                p2.score += bankedScore;
+                Console.WriteLine($"\n{p2.name} won this round and gains {bankedScore} points!");
+
+            }
+            else if (p1_roll == p2_roll)
+            {
+                p1.score += bankedScore;
+                p2.score += bankedScore;
+                Console.WriteLine($"\nBoth players won this round and gain {bankedScore} points!");
+            }
 
         }
 
-       
+        public void GameEnd()
+        {
+            Console.WriteLine("GAME OVER");
+            Console.WriteLine($"{p1.name} has {p1.score} points and {p2.name} has {p2.score} points.");
 
+            // compare score
+            if (p1.score > p2.score)
+            {
+                Console.WriteLine($"\n{p1.name} wins!! Congratulations!\n");
+            }
+            else if (p1.score < p2.score)
+            {
+                Console.WriteLine($"\n{p2.name} wins!! Congratulations!\n");
 
-    // compare score function
-    // get highest score
-    // assign and print round winner
-    // add dice sides
-    // gainpoints(winner, points)
+            }
+            else if (p1.score == p2.score)
+            {
+                Console.WriteLine("You both win!! Congratulations!\n");
+            }
 
-    // gain points function
-    // set points to player
-
-    // game end function
-    // get highest score
-    // assign and print game winner
-    // assignmenttext outro
+        }
 
 }
 }
