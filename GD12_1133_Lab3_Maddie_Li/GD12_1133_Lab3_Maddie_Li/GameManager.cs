@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,8 +13,11 @@ namespace GD12_1133_Lab3_Maddie_Li
         DiceManager p1_dice = new DiceManager();
         DiceManager p2_dice = new DiceManager();
 
+        DiceRoller roll = new DiceRoller();
+
         Player p1 = new Player();
         Player p2 = new Player();
+
 
         public void GameStart()
         {
@@ -50,18 +54,26 @@ namespace GD12_1133_Lab3_Maddie_Li
 
         public void GameRound(string r)
         {
+            int bankedScore = 0;
             Console.WriteLine($"\nRound {r}!");
 
             // p1's turn
             Console.WriteLine($"\nIt's {p1.name}'s turn!");
-            p1.Turn(p1_dice.diceList);
+            int p1_selection = p1.Turn(p1_dice.diceList);
+            int p1_roll = roll.Roll(p1_selection);
+            bankedScore += p1_selection;
 
             // p2's turn
             Console.WriteLine($"\nIt's {p2.name}'s turn!");
-            p2.Turn(p2_dice.diceList);
+            int p2_selection = p2.Turn(p2_dice.diceList);
+            int p2_roll = roll.Roll(p2_selection);
+            bankedScore += p2_selection;
 
             // comparescore(p1score, p2score)
             Console.WriteLine("\nBoth players have rolled!\n");
+            Console.WriteLine($"\nThe banked score is {bankedScore}!\n");
+
+
         }
 
        

@@ -8,8 +8,7 @@ namespace GD12_1133_Lab3_Maddie_Li
 {
     public class Player
     {
-        // instantiating
-        DiceRoller roll = new DiceRoller();
+        
 
         public string name = " ";
         public int score = 0;
@@ -26,7 +25,7 @@ namespace GD12_1133_Lab3_Maddie_Li
             if (int.TryParse(diceSelection, out int diceSides))
             {
                 diceList.Remove(diceSides);
-                return roll.Roll(diceSides);
+                return diceSides;
             }
             else
             {
@@ -35,8 +34,6 @@ namespace GD12_1133_Lab3_Maddie_Li
             }
 
 
-            // roll die
-            // return value
         }
 
     }
