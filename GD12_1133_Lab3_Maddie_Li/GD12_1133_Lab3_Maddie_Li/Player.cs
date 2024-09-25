@@ -22,7 +22,8 @@ namespace GD12_1133_Lab3_Maddie_Li
             string rawSelection = Console.ReadLine();
             string diceSelection = rawSelection.Trim('d');
 
-            if (int.TryParse(diceSelection, out int diceSides))
+            if (int.TryParse(diceSelection, out int diceSides)
+                && diceList.Contains(diceSides))
             {
                 diceList.Remove(diceSides);
                 return diceSides;
