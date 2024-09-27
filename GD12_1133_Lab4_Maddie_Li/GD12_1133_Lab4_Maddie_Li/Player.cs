@@ -8,32 +8,51 @@ namespace GD12_1133_Lab4_Maddie_Li
 {
     public class Player
     {
-        
-
         public string name = " ";
         public int score = 0;
+        public bool isCPU = false;
+
+        Random random = new Random();
 
         public int Turn(List<int> diceList)
         {
-            // show how many dice you have available
-            Console.WriteLine("DICE INVENTORY.");
-            Console.WriteLine("You have the d" + string.Join(", d", diceList) + " available to use.");
-            Console.WriteLine("Which one would you like to roll?");
-            string rawSelection = Console.ReadLine();
-            string diceSelection = rawSelection.Trim('d');
-
-            if (int.TryParse(diceSelection, out int diceSides)
-                && diceList.Contains(diceSides))
+            // player turn
+            if (!isCPU)
             {
-                diceList.Remove(diceSides);
-                return diceSides;
+                // show how many dice you have available
+                Console.WriteLine("DICE INVENTORY.");
+                Console.WriteLine("You have the d" + string.Join(", d", diceList) + " available to use.");
+                Console.WriteLine("Which one would you like to roll?");
+                string rawSelection = Console.ReadLine();
+                string diceSelection = rawSelection.Trim('d');
+
+                if (int.TryParse(diceSelection, out int diceSides)
+                    && diceList.Contains(diceSides))
+                {
+                    diceList.Remove(diceSides);
+                    return diceSides;
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid input! Please enter one of your available dice!\n");
+                    return Turn(diceList);
+                }
             }
             else
             {
-                Console.WriteLine("\nInvalid input! Please enter one of your available dice!\n");
-                return Turn(diceList);
+                int diceSides = diceList[random.Next(1, diceList.Count)];
+                
+                if (diceList.Contains(diceSides))
+                {
+                    diceList.Remove(diceSides);
+                    return diceSides;
+                }
+                else
+                {
+                    return Turn(diceList);
+                }
+                
             }
-
 
         }
 
