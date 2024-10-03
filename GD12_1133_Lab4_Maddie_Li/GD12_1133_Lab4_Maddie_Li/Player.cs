@@ -11,6 +11,7 @@ namespace GD12_1133_Lab4_Maddie_Li
         public string name = " ";
         public int score = 0;
         public bool isCPU = false;
+        public int totalRollValue = 0;
 
         Random random = new Random();
 
@@ -43,9 +44,11 @@ namespace GD12_1133_Lab4_Maddie_Li
             else
             {
                 int diceSides;
-
+                
                 // pick random die from list
                 diceSides = diceList[random.Next(0, diceList.Count)];
+
+                Console.WriteLine("CPU has rolled.");
 
                 diceList.Remove(diceSides);
                 return diceSides;

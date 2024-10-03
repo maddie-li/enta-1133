@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -12,17 +13,25 @@ namespace GD12_1133_Lab4_Maddie_Li
         // instantiating
         DiceManager p1_dice = new DiceManager();
         DiceManager p2_dice = new DiceManager();
+        DiceManager DiceManager = new DiceManager();
 
         DiceRoller roll = new DiceRoller();
 
+        Random random = new Random();
+
         Player p1 = new Player();
         Player p2 = new Player();
+
+        public int maxRollValue = 0;
 
         public void GameStart()
         {
 
             p1_dice.DiceSetup();
             p2_dice.DiceSetup();
+
+            DiceManager.DiceSetup();
+            maxRollValue = DiceManager.GetTotal();
 
             int numOfRounds = p1_dice.diceList.Count;
 
@@ -34,6 +43,10 @@ namespace GD12_1133_Lab4_Maddie_Li
             Console.WriteLine("Every round, you and your opponent will choose a die and roll against each other.");
             Console.WriteLine("Whoever rolls highest gains points equal to the combined number of sides.");
             Console.WriteLine($"This goes on for {numOfRounds} rounds, then the one with the highest points wins!");
+
+            // randomise turn order
+            TurnRandomise();
+            Console.WriteLine($"\n{p1.name} has been chosen to play first.");
 
             // get started
             Console.WriteLine("\nENTER TO START");
@@ -55,14 +68,22 @@ namespace GD12_1133_Lab4_Maddie_Li
 
             // p1's turn
             Console.WriteLine($"\nIt's {p1.name}'s turn!");
+            // get dice selection
             int p1_selection = p1.Turn(p1_dice.diceList);
+            // roll with it
             int p1_roll = roll.Roll(p1_selection);
+            // add scores
+            p1.totalRollValue += p1_roll;
             bankedScore += p1_selection;
 
             // p2's turn
             Console.WriteLine($"\nIt's {p2.name}'s turn!");
+            // get dice selection
             int p2_selection = p2.Turn(p2_dice.diceList);
+            // roll with it
             int p2_roll = roll.Roll(p2_selection);
+            // add scores
+            p2.totalRollValue += p2_roll;
             bankedScore += p2_selection;
 
             // start compare
@@ -93,7 +114,22 @@ namespace GD12_1133_Lab4_Maddie_Li
         public void GameEnd()
         {
             Console.WriteLine("\nGAME OVER");
+            // QUICK SUMMARY
             Console.WriteLine($"{p1.name} has {p1.score} points and {p2.name} has {p2.score} points.");
+
+            // STATS
+            Console.WriteLine("\nSTATS");
+
+            float p1_successRate = (float)p1.totalRollValue / (float)maxRollValue;
+            float p2_successRate = (float)p2.totalRollValue / (float)maxRollValue;
+
+            string p1_successRateFormatted = String.Format("{0:P0}", p1_successRate);
+            string p2_successRateFormatted = String.Format("{0:P0}", p2_successRate);
+
+            Console.WriteLine($"{p1.name} rolled a value of {p1.totalRollValue} out of {maxRollValue} maximum, which is a success rate of {p1_successRateFormatted}");
+            Console.WriteLine($"{p2.name} rolled a value of {p2.totalRollValue} out of {maxRollValue} maximum, which is a success rate of {p2_successRateFormatted}");
+
+            // 
 
             // compare score
             if (p1.score > p2.score)
@@ -165,6 +201,19 @@ namespace GD12_1133_Lab4_Maddie_Li
             }
 
             
+
+        }
+
+        public void TurnRandomise()
+        {
+            // randomly change order, or not
+            bool isChanged = random.Next(2) == 0;
+
+            if (isChanged)
+            {
+                (p1.name, p2.name) = (p2.name, p1.name);
+                (p1.isCPU, p2.isCPU) = (p2.isCPU, p1.isCPU);
+            }
 
         }
     }

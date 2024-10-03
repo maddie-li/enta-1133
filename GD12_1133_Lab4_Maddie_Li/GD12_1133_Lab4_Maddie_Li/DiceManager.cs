@@ -10,6 +10,7 @@ namespace GD12_1133_Lab4_Maddie_Li
     {
         public List<int> diceList = new List<int>();
 
+        
         // setup dice
         public void DiceSetup()
         {
@@ -17,8 +18,16 @@ namespace GD12_1133_Lab4_Maddie_Li
             diceList.Add(8);
             diceList.Add(12);
             diceList.Add(20);
-
         }
-       
+
+        public int GetTotal()
+        {
+            return diceList.Sum();
+        }
+
+        
+
+
+
     }
 }
