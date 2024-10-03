@@ -26,9 +26,11 @@ namespace GD12_1133_Lab4_Maddie_Li
                 string rawSelection = Console.ReadLine();
                 string diceSelection = rawSelection.Trim('d');
 
+                // if player entered a number
                 if (int.TryParse(diceSelection, out int diceSides)
                     && diceList.Contains(diceSides))
                 {
+                    // remove from dicelist
                     diceList.Remove(diceSides);
                     return diceSides;
                 }
@@ -40,17 +42,13 @@ namespace GD12_1133_Lab4_Maddie_Li
             }
             else
             {
-                int diceSides = diceList[random.Next(1, diceList.Count)];
-                
-                if (diceList.Contains(diceSides))
-                {
-                    diceList.Remove(diceSides);
-                    return diceSides;
-                }
-                else
-                {
-                    return Turn(diceList);
-                }
+                int diceSides;
+
+                // pick random die from list
+                diceSides = diceList[random.Next(0, diceList.Count)];
+
+                diceList.Remove(diceSides);
+                return diceSides;
                 
             }
 

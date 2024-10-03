@@ -39,19 +39,19 @@ namespace GD12_1133_Lab4_Maddie_Li
             Console.WriteLine("\nENTER TO START");
             Console.Read();
 
-            for (int i = 1; i < numOfRounds; i++)
+            for (int i = 0; i < numOfRounds; i++)
             {
-                GameRound(i.ToString());
+                GameRound(i);
             };
 
             GameEnd();
 
         }
 
-        public void GameRound(string r)
+        public void GameRound(int r)
         {
             int bankedScore = 0;
-            Console.WriteLine($"Round {r}!");
+            Console.WriteLine($"Round { r +  1}!");
 
             // p1's turn
             Console.WriteLine($"\nIt's {p1.name}'s turn!");
