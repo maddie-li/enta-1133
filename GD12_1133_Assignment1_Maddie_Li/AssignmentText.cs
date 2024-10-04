@@ -22,7 +22,11 @@ namespace GD12_1133_Assignment1_Maddie_Li
 ~~"".-\ \(_ _  ) ║ |\| \/ |   |     |/ \/ |  |  |- |/  ║(  _ _)/ /-.""~~
       \( _( )   ║ | | /\ |/  |     |\ /\ |/ |/ |/ |\  ║ `( )_ )/
        _>  _>   ║                                     ║  <_  <_ 
-                +═════════════════════════════════════+");
+                +═════════════════════════════════════+
+                         Press enter to begin");
+
+            
+           
 
             // main art
             Console.WriteLine(@"
@@ -46,6 +50,11 @@ namespace GD12_1133_Assignment1_Maddie_Li
    \ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `' /
     `--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'");
 
+            Console.ReadLine();
+
+            Console.WriteLine("In the Year of Our Lord 793, dreadful forewarnings have come over the\nland of Northumbria.\nThese were amazing sheets of lightning and whirlwinds, and fiery\ndragons were seen flying in the sky.\nThis can mean only one thing, O God--! \nThe Holy Island faces dreadful attack by heathen Norsemen!\n\nBy the grace of the Lord, the the raiders have agreed to engage\nthe unarmed monks in a battle of dice and chance.");
+            Console.WriteLine();
+            Sword();
             Console.WriteLine();
 
             manager.GameStart();
@@ -68,19 +77,6 @@ O===[======================-
 
         }
 
-        public void AxeBanner()
-        {
-            Console.WriteLine(@"  ,  /\  ...................................,  /\  .
- //`-||-'\\                                //`-||-'\\ 
-(| -=||=- |)                              (| -=||=- |)
- \\,-||-.//                                \\,-||-.// 
-  `  ||  '`````````````````````````````````````||  '
-     ||                                        ||  
-     ||                                        ||  
-     ||                                        ||  
-     ||                                        ||  
-     ||                                        ||  
-hjm  ()                                        ()");
-        }
+        
     }
 }

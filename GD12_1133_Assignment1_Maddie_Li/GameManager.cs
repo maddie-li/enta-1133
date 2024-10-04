@@ -49,19 +49,26 @@ namespace GD12_1133_Assignment1_Maddie_Li
             Draw.Sword();
 
             // instructions intro
-            Console.WriteLine($"Welcome to the game, {p1.name} and {p2.name}!");
-            Console.WriteLine($"\nIn this game, you each have {numOfRounds} dice of different values, but you can only use each die once.");
-            Console.WriteLine("Every round, you and your opponent will choose a die and roll against each other.");
-            Console.WriteLine("Whoever rolls highest gains points equal to the combined number of sides.");
-            Console.WriteLine($"This goes on for {numOfRounds} rounds, then the one with the highest points wins!");
+            Console.WriteLine(@$"
+Welcome to the battle, {p1.name} and {p2.name}!
+In this game, you have been each been bestowed {numOfRounds} dice of different values.
 
+Every round, you and your opponent will choose one to expend, and roll against each other.
+
+Whoever rolls highest gains a score equal the the combined number of sides.
+This means if your potential roll is higher, the stakes are higher!
+
+This goes on for {numOfRounds} rounds, then the one with the highest points is the winner!");
+
+            Draw.Sword();
+            
             // randomise turn order
             TurnRandomise();
-            Console.WriteLine($"\n{p1.name} has been chosen to play first.");
+            Console.WriteLine($"{p1.name} has been chosen to play first.");
 
             // get started
-            Console.WriteLine("\nENTER TO START");
-            Console.Read();
+            Console.WriteLine("\nPress enter to continue");
+            Console.ReadLine();
 
             // play rounds
             for (int i = 0; i < numOfRounds; i++)
@@ -144,18 +151,6 @@ namespace GD12_1133_Assignment1_Maddie_Li
 
             Console.WriteLine("\nGAME OVER");
 
-            Console.WriteLine(@"  ,  /\  ...................................,  /\  .
- //`-||-'\\                                //`-||-'\\ 
-(| -=||=- |)                              (| -=||=- |)
- \\,-||-.//                                \\,-||-.// 
-  `  ||  '`````````````````````````````````````||  '
-     ||                                        ||  
-     ||                                        ||  
-     ||                                        ||  
-     ||                                        ||  
-     ||                                        ||  
-hjm  ()                                        ()");
-
             // quick summary
             Console.WriteLine($"{p1.name} has {p1.score} points and {p2.name} has {p2.score} points.");
 
@@ -175,17 +170,53 @@ hjm  ()                                        ()");
             if (p1.score > p2.score)
             {
                 // p1 win
-                Console.WriteLine($"\n{p1.name} wins!! Congratulations!\n");
+                Console.WriteLine();
+                Console.WriteLine(@"  ,  /\  ................................,  /\  .
+ //`-||-'\\                             //`-||-'\\ 
+(| -=||=- |)         GAME OVER         (| -=||=- |)
+ \\,-||-.//                             \\,-||-.// 
+  `  ||  '``````````````````````````````````||  '
+     ||  The monks of Lindisfarne emerged   ||  
+     || victorious against the Norse pagans.||  
+     ||  The sacramental treasures of the   ||  
+     || monastery were ably defended as was ||  
+     ||      the good Lord's honour.        ||  
+hjm  ()                                     ()");
+                Console.WriteLine($"\n{p1.name} wins!! Congratulations!");
             }
             else if (p1.score < p2.score)
             {
                 // p2 win
-                Console.WriteLine($"\n{p2.name} wins!! Congratulations!\n");
+                Console.WriteLine();
+                Console.WriteLine(@"  ,  /\  ................................,  /\  .
+ //`-||-'\\                             //`-||-'\\ 
+(| -=||=- |)         GAME OVER         (| -=||=- |)
+ \\,-||-.//                             \\,-||-.// 
+  `  ||  '``````````````````````````````````||  '
+     ||    The monks of Lindisfarne were    ||  
+     || helpless against the Viking raiders.||  
+     ||    There was vicious robbery and    ||  
+     || slaughter and the Norsemen returned ||  
+     ||      home laden with treasure!      ||  
+hjm  ()                                     ()");
+                Console.WriteLine($"\n{p2.name} wins!! Congratulations!");
             }
             else if (p1.score == p2.score)
             {
                 // tie
-                Console.WriteLine("You both win!! Congratulations!\n");
+                Console.WriteLine();
+                Console.WriteLine(@"  ,  /\  ................................,  /\  .
+ //`-||-'\\                             //`-||-'\\ 
+(| -=||=- |)         GAME OVER         (| -=||=- |)
+ \\,-||-.//                             \\,-||-.// 
+  `  ||  '``````````````````````````````````||  '
+     ||    An unlikely outcome! The monks   ||  
+     || and the Viking warriors were evenly ||  
+     ||   matched! Landing at a draw, they  ||  
+     ||     were locked into an eternal     ||  
+     ||      struggle lasting milennia!     ||  
+hjm  ()                                     ()");
+                Console.WriteLine("You both win!! Congratulations!");
             }
 
             // end game or restart
@@ -230,15 +261,19 @@ hjm  ()                                        ()");
             /// </summary>
 
             // ask how many players
+            Console.WriteLine("Choose the mode of combat based on how many players there will be.");
             Console.WriteLine("[1] Player vs. CPU\n[2] Player 1 vs Player 2");
             string inpOfPlayers = Console.ReadLine();
-            
+
+
+            p2.isEnemy = true; // for flavor text reasons
+
             // read input
             if (int.TryParse(inpOfPlayers, out int numOfPlayers))
             {
                 if (numOfPlayers == 1)
                 {
-                    Console.WriteLine("Hi, player! \nWhat's your name?");
+                    Console.WriteLine("You are a devout defender of Lindisfarne.\nWhat is your name, monk?");
                     p1.name = Console.ReadLine();
                     
                     // give generic name if none given
@@ -255,7 +290,7 @@ hjm  ()                                        ()");
                 {
 
                     // get player names
-                    Console.WriteLine("Hi, players! \nWhat's the name of your first player?");
+                    Console.WriteLine("The first player will be a devout defender of Lindisfarne.\nWhat is your name, monk?");
 
                     // give generic name if none given
                     p1.name = Console.ReadLine();
@@ -264,7 +299,7 @@ hjm  ()                                        ()");
                         p1.name = "Player 1";
                     }
 
-                    Console.WriteLine("What's the name of your second player?");
+                    Console.WriteLine("The second player will be a barbarian attacker.\nWhat is your name, warrior?");
 
                     // give generic name if none given
                     p2.name = Console.ReadLine();
@@ -303,6 +338,7 @@ hjm  ()                                        ()");
             {
                 (p1.name, p2.name) = (p2.name, p1.name);
                 (p1.isCPU, p2.isCPU) = (p2.isCPU, p1.isCPU);
+                (p1.isEnemy, p2.isEnemy) = (p2.isEnemy, p1.isEnemy);
             }
 
         }
