@@ -16,5 +16,6 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
     public abstract class Thing : Object // thing is an object that has a location, includes items and characters
     {
         public Room Location { get; set; } // object location
+        
     }
 }
