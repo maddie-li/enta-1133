@@ -1,5 +1,4 @@
-﻿using GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,19 +6,15 @@ using System.Threading.Tasks;
 
 namespace GD12_1133_Assignment2_MaddieLi.Abstract
 {
-    public abstract class Room : Object, I_Container<Thing> // room is an object that has contents and exits
+    public abstract class Thing : Object // thing is an object that has a location, includes items and characters
     {
         // properties from Object
         public override string Name { get; set; } // name
         public override string Glance { get; set; } // short description (known room description, object in inventory or location)
         public override string Look { get; set; } // long description (new room description, examining object)
 
-        // properties from I_Container
-        public abstract List<Thing>? Contents { get; set; } // room contents
-
         // new properties
-        public abstract Dictionary<string, Room> Exits { get; set; } // room exits
-        public abstract bool HasBeenEntered { get; set; } // room hasBeenEntered
-        public abstract void OnEnterRoom();
+        public abstract Room Location { get; set; } // object location
+
     }
 }

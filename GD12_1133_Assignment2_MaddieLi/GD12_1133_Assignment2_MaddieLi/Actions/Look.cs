@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GD12_1133_Assignment2_MaddieLi.Actions
 {
-    internal class Look
+    internal static class Look
     {
     }
 }

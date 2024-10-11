@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces
 {
-    interface I_Container<T> // for holding stuff
+    public interface I_Container<T> // for holding stuff
     {
         List<T>? Contents { get; set; }
 
