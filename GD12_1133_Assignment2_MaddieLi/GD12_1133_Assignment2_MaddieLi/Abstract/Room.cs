@@ -7,19 +7,39 @@ using System.Threading.Tasks;
 
 namespace GD12_1133_Assignment2_MaddieLi.Abstract
 {
-    public abstract class Room : Object, I_Container<Thing> // room is an object that has contents and exits
+    public abstract class Room : IInfo, ICanHold<Item> // room is an object that has contents and exits
     {
-        // properties from Object
-        public override string Name { get; set; } // name
-        public override string Glance { get; set; } // short description (known room description, object in inventory or location)
-        public override string Look { get; set; } // long description (new room description, examining object)
+        public abstract void OnRoomEnter();
+        public virtual void OnRoomIntro()
+        {
+            if (HasBeenEntered)
+            {
+                Console.WriteLine($"{Name}\n{Glance}");
+            }
+            else
+            {
+                Console.WriteLine($"{Name}\n{Look}");
+                HasBeenEntered = true;
+            }
 
-        // properties from I_Container
-        public abstract List<Thing>? Contents { get; set; } // room contents
+            if (Contents!.Count == 0)
+            {
+                Console.WriteLine("There is nothing in the room.");
+            }
+            else
+            {
+                Console.WriteLine(Contents.Count + "items in here");
+                Console.WriteLine("In this room there is:");
 
-        // new properties
-        public abstract Dictionary<string, Room> Exits { get; set; } // room exits
-        public abstract bool HasBeenEntered { get; set; } // room hasBeenEntered
-        public abstract void OnEnterRoom();
+                foreach (Item i in Contents)
+                {
+                    Console.WriteLine($"thing {i}, name '{i.Name}', description '{i.Glance}'");
+                }
+            }
+        }
+        public void AddItem(Item item)
+        {
+            Contents.Add(item);
+        }
     }
 }

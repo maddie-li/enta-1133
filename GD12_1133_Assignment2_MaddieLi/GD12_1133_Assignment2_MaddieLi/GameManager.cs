@@ -11,11 +11,11 @@ namespace GD12_1133_Assignment2_MaddieLi
 {
     internal class GameManager
     {
-        RoomCreate roomSetup = new RoomCreate();
+        RoomCreate roomCreate = new RoomCreate();
         public void StartGame()
         {
-            roomSetup.hallway.OnEnterRoom();
-
+            Room room = roomCreate.CreateHealingRoom();
+            // room.OnEnterRoom 
         }
     }
 }
