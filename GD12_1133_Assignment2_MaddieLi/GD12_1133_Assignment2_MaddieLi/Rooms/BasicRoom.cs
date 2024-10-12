@@ -12,46 +12,29 @@ namespace GD12_1133_Assignment2_MaddieLi.Rooms
     using Microsoft.VisualBasic;
     public class BasicRoom : Room
     {
-        private Dictionary<string, Room> _exits { get; set; }
-        
-        // getters and setters from I_Container
-        public override List<Thing>? Contents
+        // INFO
+        public override string Name { get; set; } // name
+        public override string Glance { get; set; } // short description (known room description, object in inventory or location)
+        public override string Look { get; set; } // long description (new room description, examining object)
+
+        // ROOM
+        public override bool HasBeenEntered { get; set; }
+
+        // FUNCTION
+        public override void OnRoomEnter()
         {
-            get { return _contents; }
-
-            set { _contents = value; }
-        }
-
-        // getters and setters from Room
-        public override Dictionary<string, Room> Exits
-        {
-            get { return _exits; }
-
-            set { _exits = value; }
-        }
-        public override bool HasBeenEntered
-        { 
-                get { return _hasBeenEntered; }
-                set { _hasBeenEntered = value; }
-        } 
-
-        // FUNCTIONS
-        public override void OnEnterRoom()
-        {
-            
 
         }
 
         // CONSTRUCTOR
-        
-        public BasicRoom(string Name, string Glance, string Look, List<Thing> Contents, Dictionary<string, Room> Exits)
+        public BasicRoom(string Name, string Glance, string Look, List<Item> Contents, List<Character> Inhabitants) : base()
         {
             this.Name = Name;
             this.Glance = Glance;
             this.Look = Look;
-           this.Contents  = Contents;
-            _exits = Exits;
-            
+            this.Contents = Contents;
+            this.Inhabitants = Inhabitants;
+
         }
     }
 

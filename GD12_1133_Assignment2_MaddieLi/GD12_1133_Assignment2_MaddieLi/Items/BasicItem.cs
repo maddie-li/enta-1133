@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GD12_1133_Assignment2_MaddieLi.Items
+﻿namespace GD12_1133_Assignment2_MaddieLi.Items
 {
     using GD12_1133_Assignment2_MaddieLi.Abstract;
-    using System.Xml.Linq;
-
-    public class Knife : Item
+    using GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces;
+    public class BasicItem : Item
     {
         public override string Name { get; set; } // name
         public override string Glance { get; set; } // short description (known room description, object in inventory or location)
@@ -21,13 +14,14 @@ namespace GD12_1133_Assignment2_MaddieLi.Items
         }
 
         // CONSTRUCTOR
-        public Knife(string Name, string Glance, string Look) : base()
+        public BasicItem(string Name, string Glance, string Look) : base()
         {
             this.Name = Name;
             this.Glance = Glance;
             this.Look = Look;
 
         }
+
     }
 
 }

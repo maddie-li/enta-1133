@@ -10,11 +10,24 @@ namespace GD12_1133_Assignment2_MaddieLi.People
     using GD12_1133_Assignment2_MaddieLi.Abstract;
     using GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces;
 
-    internal class Combatant : Character, I_Container<Item>, IInfo
+    public class Combatant : Character, IInfo, ICanHold<Item>
     {
-        
+        // INFO
+        public override string Name { get; set; }
+        public override string Glance { get; set; }
+        public override string Look { get; set; }
+
+        // CAN HOLD
+        public List<Item>? Contents { get; set; }
+
+        // FUNCTIONS
+        public override void TalkTo() // talk to character
+        {
+
+        }
+
         // CONSTRUCTOR
-        public CharacterSetup(string Name, string Glance, string Look, List<Thing> Contents) : base()
+        public Combatant(string Name, string Glance, string Look, List<Item> Contents) : base()
         {
             this.Name = Name;
             this.Glance = Glance;
@@ -22,8 +35,6 @@ namespace GD12_1133_Assignment2_MaddieLi.People
             this.Contents = Contents;
 
         }
-
-        public List<Item>? Contents { get; set ; }
     }
 
 

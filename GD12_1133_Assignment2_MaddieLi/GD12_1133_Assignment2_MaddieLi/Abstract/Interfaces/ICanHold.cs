@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces
 {
-    public interface ICanHold<T> // for holding stuff
+    internal interface ICanHold<Item> // for holding stuff
     {
-        List<T>? Contents { get; set; }
+        public abstract List<Item>? Contents { get; set; } // list of items
 
     }
 }
