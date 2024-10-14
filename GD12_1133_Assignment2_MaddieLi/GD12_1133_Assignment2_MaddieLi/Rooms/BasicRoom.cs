@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 namespace GD12_1133_Assignment2_MaddieLi.Rooms
 {
     using GD12_1133_Assignment2_MaddieLi.Abstract;
+    using GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces;
     using GD12_1133_Assignment2_MaddieLi.Items;
     using GD12_1133_Assignment2_MaddieLi.People;
+    using GD12_1133_Assignment2_MaddieLi.Actions;
     using Microsoft.VisualBasic;
     public class BasicRoom : Room
     {
@@ -21,19 +23,19 @@ namespace GD12_1133_Assignment2_MaddieLi.Rooms
         public override bool HasBeenEntered { get; set; }
 
         // FUNCTION
+        Look LookAt = new Look();
         public override void OnRoomEnter()
         {
-
+            LookAt.Describe(this, HasBeenEntered);
         }
 
         // CONSTRUCTOR
-        public BasicRoom(string Name, string Glance, string Look, List<Item> Contents, List<Character> Inhabitants) : base()
+        public BasicRoom(string Name, string Glance, string Look, List<Item> Contents) : base()
         {
             this.Name = Name;
             this.Glance = Glance;
             this.Look = Look;
             this.Contents = Contents;
-            this.Inhabitants = Inhabitants;
 
         }
     }

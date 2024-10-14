@@ -1,5 +1,4 @@
 ﻿using GD12_1133_Assignment2_MaddieLi.Abstract;
-using GD12_1133_Assignment2_MaddieLi.Navigation;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -11,13 +10,15 @@ namespace GD12_1133_Assignment2_MaddieLi
 {
     public class ProjectText
     {
-        Directions directions = new Directions();
 
-        string _introText = @"
-        ADVENTURE GAME
-        Welcome to Adventure Game!
-        To play this game, enter commands to tell the computer what to do.
-        Enter 'help' for a list of basic commands.";
+        public string AssignmentText = @"
+            Assignment 2 Maddie Li GD12 ENTA 1133";
+
+        public string IntroText = @"
+            ADVENTURE GAME
+            Welcome to Adventure Game!
+            To play this game, enter commands to tell the computer what to do.
+            Enter 'help' for a list of basic commands.";
 
         public string HelpText()
         {
@@ -36,8 +37,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                 go / go in a direction
             ";
 
-            string _directionsText = string.Join("\n\t\t", directions.GameDir);
-            string _directionsCommandsText = "DIRECTIONS" + "\n\t\t" + _directionsText;
+            string _directionsCommandsText = "DIRECTIONS" + "\n\t\t" + "north\n\t\tsouth\n\t\teast\n\t\twest";
             string _helpText = _commandsText + _actionCommandsText + _directionsCommandsText;
 
             return _helpText;

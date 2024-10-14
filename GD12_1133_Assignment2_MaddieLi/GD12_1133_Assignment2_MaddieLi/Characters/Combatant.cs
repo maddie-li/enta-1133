@@ -19,6 +19,7 @@ namespace GD12_1133_Assignment2_MaddieLi.People
 
         // CAN HOLD
         public List<Item>? Contents { get; set; }
+        public override Room CurrentRoom { get; set; }
 
         // FUNCTIONS
         public override void TalkTo() // talk to character
@@ -27,11 +28,12 @@ namespace GD12_1133_Assignment2_MaddieLi.People
         }
 
         // CONSTRUCTOR
-        public Combatant(string Name, string Glance, string Look, List<Item> Contents) : base()
+        public Combatant(string Name, string Glance, string Look, Room CurrentRoom, List<Item> Contents) : base()
         {
             this.Name = Name;
             this.Glance = Glance;
             this.Look = Look;
+            this.CurrentRoom = CurrentRoom;
             this.Contents = Contents;
 
         }

@@ -21,48 +21,20 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         // CAN HOLD
         public virtual List<Item>? Contents { get; set; } // list of items
 
+
         // FUNCTIONS
         public abstract void OnRoomEnter();
-        public virtual void OnRoomIntro()
+
+        public virtual Room CheckIsInRoom(Character character)
         {
-            if (HasBeenEntered)
+            if (character.CurrentRoom == this)
             {
-                Console.WriteLine($"{Name}\n{Glance}");
-            }
-            else
-            {
-                Console.WriteLine($"{Name}\n{Look}");
-                HasBeenEntered = true;
+                return this;
             }
 
-            if (Contents!.Count == 0)
-            {
-                Console.WriteLine("There is nothing in the room.");
-            }
-            else
-            {
-                Console.WriteLine("In this room there is:");
-
-                foreach (Item i in Contents)
-                {
-                    Console.WriteLine(i.Glance);
-                }
-            }
-
-            if (Inhabitants!.Count == 0)
-            {
-                Console.WriteLine("There are no people here.");
-            }
-            else
-            {
-                Console.WriteLine("In this room there is:");
-
-                foreach (Character i in Inhabitants)
-                {
-                    Console.WriteLine(i.Glance);
-                }
-            }
+            return null;
         }
+
         public void AddItem(Item item)
         {
             Contents!.Add(item);

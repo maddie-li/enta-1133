@@ -15,6 +15,9 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         public abstract string Glance { get; set; } // short description (known room description, object in inventory or location)
         public abstract string Look { get; set; } // long description (new room description, examining object)
 
+        // PROPERTIES
+        public abstract Room CurrentRoom { get; set; } // name
+
         // FUNCTIONS
         public abstract void TalkTo(); // talk to character
     }
