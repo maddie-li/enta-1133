@@ -24,26 +24,39 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             int _currentRoomX = _currentRoom.XPos;
             int _currentRoomY = _currentRoom.YPos;
 
-            switch(dir)
+            switch (dir)
             {
                 case Directions.Dir.Direction.n:
-                     _newRoom = _currentRoom.North;
+                    if (_currentRoom.IsDirectionAllowed(Dir.Direction.n))
+                    {
+                        _newRoom = _currentRoom.North;
+                    }
                     break;
                 case Directions.Dir.Direction.e:
-                    _newRoom = _currentRoom.East;
+                    if (_currentRoom.IsDirectionAllowed(Dir.Direction.e))
+                    {
+                        _newRoom = _currentRoom.East;
+                    }
                     break;
                 case Directions.Dir.Direction.s:
-                    _newRoom = _currentRoom.South;
+                    if (_currentRoom.IsDirectionAllowed(Dir.Direction.s))
+                    {
+                        _newRoom = _currentRoom.South;
+                    }
                     break;
                 case Directions.Dir.Direction.w:
-                    _newRoom = _currentRoom.West;
+                    if (_currentRoom.IsDirectionAllowed(Dir.Direction.w))
+                    {
+                        _newRoom = _currentRoom.West;
+                    }
                     break;
             }
 
-            if (_newRoom != null)
-            {
+            if (_newRoom != null) { 
+            
                 _targetChar.CurrentRoom = _newRoom;
-                Console.WriteLine($"Leaving {_currentRoom.Name}!");
+                Console.WriteLine($"Moving from {_currentRoom.Name} to {_newRoom.Name}!");
+                _newRoom.OnRoomEnter();
             }
             else
             {

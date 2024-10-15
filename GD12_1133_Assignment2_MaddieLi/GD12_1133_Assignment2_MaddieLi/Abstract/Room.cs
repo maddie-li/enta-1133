@@ -23,27 +23,30 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         public abstract bool HasBeenEntered { get; set; }
         public virtual List<Character>? Inhabitants { get; set; } // list of characters in room
 
-        bool[] _allowedDirections = new bool[4]; // existing directions
+        public bool[] _allowedDirections = new bool[4]; // existing directions
 
-        public int XPos { get; set; } 
+        public int XPos { get; set; } // positions in grid
         public int YPos { get; set; }
 
-        public Room North { get; private set; }
-        public Room East { get; private set; }
-        public Room South { get; private set; }
-        public Room West { get; private set; }
+        public Room North { get; set; } // directional linked rooms
+        public Room East { get; set; }
+        public Room South { get; set; }
+        public Room West { get; set; }
 
         public abstract void OnRoomEnter(); // when entering room for first time
 
-        public void AllowedExits()
+
+        public void CanExit(Dir.Direction direction) // changes allowed direction to true
         {
-            _allowedDirections[0] = false;
-            _allowedDirections[1] = false;
-            _allowedDirections[2] = false;
-            _allowedDirections[3] = false;
+            _allowedDirections[(int)direction] = true;
         }
 
-        public bool IsDirectionAllowed(Dir.Direction direction)
+        public void CannotExit(Dir.Direction direction) // changes allowed direction to true
+        {
+            _allowedDirections[(int)direction] = false;
+        }
+
+        public bool IsDirectionAllowed(Dir.Direction direction) // returns if diretion is allowed
         {
             return _allowedDirections[(int)direction];
         }
@@ -64,7 +67,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         }
 
 
-        public void SetRooms(Room north, Room east, Room south, Room west)
+        public void SetRooms(Room north, Room east, Room south, Room west) // creates rooms
         {
             North = north;
             East = east;

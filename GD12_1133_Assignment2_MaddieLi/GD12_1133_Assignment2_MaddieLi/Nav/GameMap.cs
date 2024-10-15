@@ -42,6 +42,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
             room.Look = look;
             room.Contents = contents;
 
+            SetConnections();
             return room;
         }
 

@@ -34,6 +34,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
 
         private void _describeContents(Room _targetRoom)
         {
+            // ITEMS IN ROOM
             if (_targetRoom.Contents!.Count == 0)
             {
                 Console.WriteLine("There is nothing in the room.");
@@ -48,6 +49,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
                 }
             }
 
+            // CHARACTERS IN ROOM
             if (_targetRoom.Inhabitants == null)
             {
                 Console.WriteLine("There are no people here.");
@@ -65,6 +67,37 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
                     Console.WriteLine(i.Glance);
                 }
             }
+
+            // AVAILABLE EXITS
+            List<bool> _directionsList = new List<bool>();
+
+            foreach (var item in _targetRoom._allowedDirections)
+            {
+                _directionsList.Add(item);
+            }
+
+            List<string> _directionsListWrite = new List<string>();
+
+
+
+            if (_directionsList[(int)Directions.Dir.Direction.n]) {
+                _directionsListWrite.Add("north");
+            }
+            else if (_directionsList[(int)Directions.Dir.Direction.e])
+            {
+                _directionsListWrite.Add("east");
+            }
+            else if (_directionsList[(int)Directions.Dir.Direction.s])
+            {
+                _directionsListWrite.Add("south");
+            }
+            else if (_directionsList[(int)Directions.Dir.Direction.w])
+            {
+                _directionsListWrite.Add("west");
+            }
+
+
+            Console.WriteLine($"Exits: { String.Join(" ", _directionsListWrite)}");
         }
     }
 }

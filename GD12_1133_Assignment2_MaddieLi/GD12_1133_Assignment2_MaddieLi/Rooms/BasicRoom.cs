@@ -30,6 +30,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Rooms
             LookAt.Describe(this, HasBeenEntered);
         }
 
+
         public BasicRoom(int x, int y, string name, string glance, string look, List<Item> contents)
         : base(x, y, name, glance, look, contents) { }
 

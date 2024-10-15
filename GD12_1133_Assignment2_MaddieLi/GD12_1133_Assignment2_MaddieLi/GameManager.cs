@@ -49,18 +49,29 @@ namespace GD12_1133_Assignment2_MaddieLi
         Look Look = new Look();
         Move Move = new Move();
 
+        
+
         public void SetUp()
         {
             // setup
 
             gameMap.CreateMap();
             
-            Room hallway = gameMap.RoomSetup(1, 1, "Hallway", "A hallway", "A long, dark hallway", new List<Item> { });
+            Room hallway = gameMap.RoomSetup(0, 0, "Hallway", "A hallway", "A long, dark hallway", new List<Item> { });
+
+            hallway.CanExit(Dir.Direction.s);
+            hallway.CanExit(Dir.Direction.e);
+
+
+            Room dock = gameMap.RoomSetup(1, 0, "Dock", "A dock", "A loading dock, exposed to the ocean", new List<Item> { });
+
 
             player = new Combatant("The player", "Yourself", "It's you, the player", hallway, new List<Item> { });
 
+
             StartGame(hallway);
         }
+
 
         public void StartGame(Room _startingRoom) // start game and loop
         {
@@ -71,9 +82,9 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             while (isGamePlaying)
             {
+
                 TurnUpdate(player);
                 GetInput();
-                
             }
             
         }
