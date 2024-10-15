@@ -8,7 +8,7 @@
             ProjectText write = new ProjectText();
 
             Console.WriteLine(write.AssignmentText);
-            gameManager.StartGame();
+            gameManager.SetUp();
         }
     }
 }
