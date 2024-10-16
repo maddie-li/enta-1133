@@ -17,5 +17,17 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         // FUNCTIONS
         public abstract void Use(Item? target = null);
 
+        // PROPERTIES
+        public abstract Room CurrentRoom { get; set; } // name
+
+        // CONSTRUCTOR
+        public Item(string Name, string Glance, string Look, Room CurrentRoom)
+        {
+            this.Name = Name;
+            this.Glance = Glance;
+            this.Look = Look;
+            this.CurrentRoom = CurrentRoom;
+
+        }
     }
 }

@@ -17,13 +17,13 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         public abstract string Look { get; set; } // long description (new room description, examining object)
 
         // from CAN HOLD
-        public virtual List<Item>? Contents { get; set; } // list of items
+        public virtual List<Item>? Contents { get; set; } = new List<Item>(); // list of items
 
         // PROPERTIES
         public abstract bool HasBeenEntered { get; set; }
-        public virtual List<Character>? Inhabitants { get; set; } // list of characters in room
 
         public bool[] _allowedDirections = new bool[4]; // existing directions
+        public List<Character> Inhabitants { get; set; } = new List<Character>(); // list of characters 
 
         public int XPos { get; set; } // positions in grid
         public int YPos { get; set; }
@@ -76,14 +76,13 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         }
 
         // CONSTRUCTOR
-        public Room(int x, int y, string Name, string Glance, string Look, List<Item> Contents)
+        public Room(int x, int y, string Name, string Glance, string Look)
         {
             this.XPos = x;
             this.YPos = y;
             this.Name = Name;
             this.Glance = Glance;
             this.Look = Look;
-            this.Contents = Contents;
 
         }
     }

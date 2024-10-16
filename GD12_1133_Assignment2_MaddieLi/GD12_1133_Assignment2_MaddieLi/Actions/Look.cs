@@ -9,6 +9,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
 {
     internal class Look
     {
+
         public void Describe(Room _targetRoom)
         {
             Console.WriteLine($"{_targetRoom.Name}\n{_targetRoom.Look}\n{_targetRoom.Glance}");
@@ -34,41 +35,46 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
 
         private void _describeContents(Room _targetRoom)
         {
-            string _typestring = _targetRoom.GetType().ToString();
-            Console.WriteLine(_typestring);
+            /*string _typestring = _targetRoom.GetType().ToString(); for testing
+            Console.WriteLine(_typestring);*/
+
+
+            // prevents from writing player description when looking
+            List<String> _roomContents = new List<String>();
+
+            foreach (Character i in _targetRoom.Inhabitants)
+            {
+                if (i.Glance != "Yourself")
+                {
+                    _roomContents.Add(i.Glance.ToString());
+                }
+                
+            }
+            foreach (Item i in _targetRoom.Contents)
+            {
+                _roomContents.Add(i.Glance.ToString());
+
+            }
 
             // ITEMS IN ROOM
-            if (_targetRoom.Contents!.Count == 0)
+            if (_roomContents == null)
             {
-               // Console.WriteLine("There is nothing in the room.");
+                // Console.WriteLine("Null."); for testing
+            }
+            else if (_roomContents!.Count == 0)
+            {
+               // Console.WriteLine("Zero."); for testing
             }
             else
             {
-                Console.WriteLine("In this room there is:");
+                Console.Write("\nIn this room you can see ");
 
-                foreach (Item i in _targetRoom.Contents)
+                foreach (String i in _roomContents)
                 {
-                    Console.WriteLine(i.Glance);
+                    Console.Write(i.ToLower());
                 }
-            }
 
-            // CHARACTERS IN ROOM
-            if (_targetRoom.Inhabitants == null)
-            {
-                // Console.WriteLine("There are no people here.");
-            }
-            else if (_targetRoom.Inhabitants!.Count == 0)
-            {
-                // Console.WriteLine("There are no people here.");
-            }
-            else
-            {
-                Console.WriteLine("In this room there is:");
-
-                foreach (Character i in _targetRoom.Inhabitants)
-                {
-                    Console.WriteLine(i.Glance);
-                }
+                Console.WriteLine(".");
             }
 
             /*// AVAILABLE EXITS

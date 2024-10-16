@@ -58,40 +58,35 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
             {
                 return new BasicRoom(x, y, $" Room at ({x}, {y})",
                                         $"Short description of Room.",
-                                        $"Long description of Room.",
-                                        new List<Item>());
+                                        $"Long description of Room.");
             }
             else if (_combatRoomCoords.Contains((x, y)))
             {
                 return new CombatRoom(x, y, $" Combat Room at ({x}, {y})",
                                         $"Short description of Combat Room.",
-                                        $"Long description of Combat Room.",
-                                        new List<Item>());
+                                        $"Long description of Combat Room.");
             }
             else if (_treasureRoomCoords.Contains((x, y)))
             {
                 return new TreasureRoom(x, y, $" Treasue Room at ({x}, {y})",
                                         $"Short description of Treasyure Room.",
-                                        $"Long description of Treasure Room.",
-                                        new List<Item>());
+                                        $"Long description of Treasure Room.");
             }
             else if (_bossRoomCoords.Contains((x, y)))
             {
                 return new BossRoom(x, y, $" Boss Room at ({x}, {y})",
                                         $"Short description of Boss Room.",
-                                        $"Long description of Boss Room.",
-                                        new List<Item>());
+                                        $"Long description of Boss Room.");
             }
             else
             {
                 return new BasicRoom(x, y, $" Room at ({x}, {y})",
                                         $"Short description of Room.",
-                                        $"Long description of Room.",
-                                        new List<Item>());
+                                        $"Long description of Room.");
             }
         }
 
-        public Room RoomSetup(int x, int y, string name, string glance, string look, List<Item> contents)
+        public Room RoomSetup(int x, int y, string name, string glance, string look)
         {
             BasicRoom room = (BasicRoom)roomArray[x, y];
 
@@ -100,7 +95,6 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
             room.YPos = y;
             room.Glance = glance;
             room.Look = look;
-            room.Contents = contents;
 
             SetConnections();
             return room;

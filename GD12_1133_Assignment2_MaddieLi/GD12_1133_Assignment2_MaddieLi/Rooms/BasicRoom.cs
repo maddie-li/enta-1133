@@ -23,7 +23,9 @@ namespace GD12_1133_Assignment2_MaddieLi.Rooms
         // ROOM
         public override bool HasBeenEntered { get; set; }
 
-        // FUNCTION
+        // PROPERTIES
+        public virtual List<Character>? Inhabitants { get; set; } // list of items
+
         Look LookAt = new Look();
         public override void OnRoomEnter()
         {
@@ -31,8 +33,8 @@ namespace GD12_1133_Assignment2_MaddieLi.Rooms
         }
 
 
-        public BasicRoom(int x, int y, string name, string glance, string look, List<Item> contents)
-        : base(x, y, name, glance, look, contents) { }
+        public BasicRoom(int x, int y, string name, string glance, string look)
+        : base(x, y, name, glance, look) { }
 
     }
 

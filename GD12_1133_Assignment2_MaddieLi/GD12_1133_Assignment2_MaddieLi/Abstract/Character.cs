@@ -17,8 +17,6 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
 
         // PROPERTIES
         public abstract Room CurrentRoom { get; set; } // name
-
-        // FUNCTIONS
-        public abstract void TalkTo(); // talk to character
+        public abstract int Health { get; set; }   // health
     }
 }
