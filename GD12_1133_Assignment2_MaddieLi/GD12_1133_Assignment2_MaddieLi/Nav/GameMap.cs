@@ -11,7 +11,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
     internal class GameMap
     {
         int MapSize = 3;
-        BasicRoom[,] roomArray;
+        Room[,] roomArray;
 
         public void CreateMap() // sets up map and makes empty 
         {
@@ -21,13 +21,73 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
             {
                 for (int y = 0; y < MapSize; y++)
                 {
-                    string name = $"Room at ({x}, {y})";
-                    string glance = $"Short description of Room at ({x}, {y}).";
-                    string look = $"Long description of Room at ({x}, {y}).";
-                    List<Item> contents = new List<Item>();
-
-                    roomArray[x, y] = new BasicRoom(x, y, name, glance, look, contents);
+                    roomArray[x, y] = CreateRoom(x, y);
                 }
+            }
+        }
+
+        private Room CreateRoom(int x, int y)
+        {
+            var _basicRoomCoords = new List<(int, int)>
+            {
+                (0, 0),
+            };
+
+            var _combatRoomCoords = new List<(int, int)>
+            {
+                (0, 1),
+                (1, 1),
+                (2, 1),
+                (1, 2)
+            };
+
+            var _treasureRoomCoords = new List<(int, int)>
+            {
+                (0, 2),
+                (2, 0),
+            };
+
+            var _bossRoomCoords = new List<(int, int)>
+            {
+                (1, 0),
+                (2, 2),
+            };
+
+
+            if (_basicRoomCoords.Contains((x, y))) 
+            {
+                return new BasicRoom(x, y, $" Room at ({x}, {y})",
+                                        $"Short description of Room.",
+                                        $"Long description of Room.",
+                                        new List<Item>());
+            }
+            else if (_combatRoomCoords.Contains((x, y)))
+            {
+                return new CombatRoom(x, y, $" Combat Room at ({x}, {y})",
+                                        $"Short description of Combat Room.",
+                                        $"Long description of Combat Room.",
+                                        new List<Item>());
+            }
+            else if (_treasureRoomCoords.Contains((x, y)))
+            {
+                return new TreasureRoom(x, y, $" Treasue Room at ({x}, {y})",
+                                        $"Short description of Treasyure Room.",
+                                        $"Long description of Treasure Room.",
+                                        new List<Item>());
+            }
+            else if (_bossRoomCoords.Contains((x, y)))
+            {
+                return new BossRoom(x, y, $" Boss Room at ({x}, {y})",
+                                        $"Short description of Boss Room.",
+                                        $"Long description of Boss Room.",
+                                        new List<Item>());
+            }
+            else
+            {
+                return new BasicRoom(x, y, $" Room at ({x}, {y})",
+                                        $"Short description of Room.",
+                                        $"Long description of Room.",
+                                        new List<Item>());
             }
         }
 

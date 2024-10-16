@@ -11,7 +11,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
     {
         public void Describe(Room _targetRoom)
         {
-            Console.WriteLine($"{_targetRoom.Name}\n{_targetRoom.Look}");
+            Console.WriteLine($"{_targetRoom.Name}\n{_targetRoom.Look}\n{_targetRoom.Glance}");
 
             _describeContents( _targetRoom );
             
@@ -34,10 +34,13 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
 
         private void _describeContents(Room _targetRoom)
         {
+            string _typestring = _targetRoom.GetType().ToString();
+            Console.WriteLine(_typestring);
+
             // ITEMS IN ROOM
             if (_targetRoom.Contents!.Count == 0)
             {
-                Console.WriteLine("There is nothing in the room.");
+               // Console.WriteLine("There is nothing in the room.");
             }
             else
             {
@@ -52,11 +55,11 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             // CHARACTERS IN ROOM
             if (_targetRoom.Inhabitants == null)
             {
-                Console.WriteLine("There are no people here.");
+                // Console.WriteLine("There are no people here.");
             }
             else if (_targetRoom.Inhabitants!.Count == 0)
             {
-                Console.WriteLine("There are no people here.");
+                // Console.WriteLine("There are no people here.");
             }
             else
             {
@@ -68,7 +71,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
                 }
             }
 
-            // AVAILABLE EXITS
+            /*// AVAILABLE EXITS
             List<bool> _directionsList = new List<bool>();
 
             foreach (var item in _targetRoom._allowedDirections)
@@ -97,7 +100,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             }
 
 
-            Console.WriteLine($"Exits: { String.Join(" ", _directionsListWrite)}");
+            Console.WriteLine($"Exits: { String.Join(" ", _directionsListWrite)}");*/
         }
     }
 }

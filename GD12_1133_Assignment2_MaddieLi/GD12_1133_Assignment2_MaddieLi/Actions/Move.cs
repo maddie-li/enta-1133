@@ -55,7 +55,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             if (_newRoom != null) { 
             
                 _targetChar.CurrentRoom = _newRoom;
-                Console.WriteLine($"Moving from {_currentRoom.Name} to {_newRoom.Name}!");
+                // Console.WriteLine($"Moving from {_currentRoom.Name} to {_newRoom.Name}!");
                 _newRoom.OnRoomEnter();
             }
             else

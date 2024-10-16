@@ -57,19 +57,42 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             gameMap.CreateMap();
             
-            Room hallway = gameMap.RoomSetup(0, 0, "Hallway", "A hallway", "A long, dark hallway", new List<Item> { });
+            Room boat = gameMap.RoomSetup(0, 0, "Boat", "The way out is east.", "The boat you arrived in.", new List<Item> { });
+            boat.CanExit(Dir.Direction.e);
 
-            hallway.CanExit(Dir.Direction.s);
-            hallway.CanExit(Dir.Direction.e);
+            Room dock = gameMap.RoomSetup(0, 1, "Dock", "There is a door in the east wall and the loading bay is south.", "A loading dock, exposed to the ocean", new List<Item> { });
+            dock.CanExit(Dir.Direction.e);
+            dock.CanExit(Dir.Direction.s);
+
+            Room armory = gameMap.RoomSetup(0, 2, "Armory", "The way back out is west", "A strangely constructed room filled with weapons.", new List<Item> { });
+            armory.CanExit(Dir.Direction.w);
+
+            Room observation = gameMap.RoomSetup(1, 0, "Observation deck", "The loading bay is east and security is south.", "Raised above the port, you can see everything.", new List<Item> { });
+            observation.CanExit(Dir.Direction.e);
+            observation.CanExit(Dir.Direction.s);
+
+            Room bay = gameMap.RoomSetup(1, 1, "Loading bay", "The dock is north, the warehouse east, the gate south, and the observation deck north.", "A busy central hub where people shuttle product in all four directions..", new List<Item> { });
+            bay.CanExit(Dir.Direction.e);
+            bay.CanExit(Dir.Direction.s);
+            bay.CanExit(Dir.Direction.e);
+
+            Room warehouse = gameMap.RoomSetup(1, 2, "Warehouse", "The loading bay is west and the locked office is south.", "A cavernous warehouse.", new List<Item> { });
+            bay.CanExit(Dir.Direction.w);
+            bay.CanExit(Dir.Direction.s);
+
+            Room security = gameMap.RoomSetup(2, 0, "Security", "The observation deck is north.", "A messsy and outdated security room full of camera feeds.", new List<Item> { });
+            bay.CanExit(Dir.Direction.n);
+
+            Room gate = gameMap.RoomSetup(2, 1, "Gate", "", "", new List<Item> { });
+            bay.CanExit(Dir.Direction.n);
+
+            Room office = gameMap.RoomSetup(2, 2, "Office", "The warehouse is north", "Lavishly decorated.", new List<Item> { });
+            bay.CanExit(Dir.Direction.n);
+
+            player = new Combatant("The player", "Yourself", "It's you, the player", boat, new List<Item> { });
 
 
-            Room dock = gameMap.RoomSetup(1, 0, "Dock", "A dock", "A loading dock, exposed to the ocean", new List<Item> { });
-
-
-            player = new Combatant("The player", "Yourself", "It's you, the player", hallway, new List<Item> { });
-
-
-            StartGame(hallway);
+            StartGame(boat);
         }
 
 
