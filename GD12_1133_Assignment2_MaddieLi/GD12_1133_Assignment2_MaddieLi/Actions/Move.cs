@@ -63,5 +63,21 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
 
             
         }
+
+        public void Room(BaseRoom _newRoom, Player _targetChar)
+        {
+            BaseRoom _currentRoom = _targetChar.CurrentRoom;
+
+            if (_newRoom != null)
+            {
+                _targetChar.CurrentRoom = _newRoom;
+            }
+            else
+            {
+                Console.WriteLine("You can't go that way.");
+            }
+
+
+        }
     }
 }

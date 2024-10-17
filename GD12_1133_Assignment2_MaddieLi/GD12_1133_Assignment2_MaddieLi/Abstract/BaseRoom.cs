@@ -1,5 +1,6 @@
 ﻿using GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces;
 using GD12_1133_Assignment2_MaddieLi.Directions;
+using GD12_1133_Assignment2_MaddieLi.Nav;
 using GD12_1133_Assignment2_MaddieLi.Rooms;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         public abstract bool HasBeenEntered { get; set; }
 
         private bool[] _allowedDirections = new bool[4]; // existing directions
+        
+        private BaseRoom[] Exits { get; set; } = new BaseRoom[4];
 
         public int XPos { get; set; } // positions in grid
         public int YPos { get; set; }
@@ -60,12 +63,32 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
             return null!;
         }
 
+        public bool IsRoomAllowed(BaseRoom targetRoom, BaseRoom currentRoom)
+        {
+            for (int i = 0; i < Exits.Length; i++)
+            {
+                if (targetRoom == currentRoom.Exits[i])
+                {
+                    return true;
+                }
+            }
+
+            return false;
+           
+        }
+
         public void SetRooms(BaseRoom north, BaseRoom east, BaseRoom south, BaseRoom west) // creates rooms
         {
             NorthExit = north;
             EastExit = east;
             SouthExit = south;
             WestExit = west;
+
+            Exits[0] = NorthExit;
+            Exits[1] = EastExit;
+            Exits[2] = SouthExit;
+            Exits[3] = WestExit;
+
         }
 
         // CONSTRUCTOR

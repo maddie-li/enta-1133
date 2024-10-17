@@ -80,6 +80,8 @@ namespace GD12_1133_Assignment2_MaddieLi
 
         };
 
+        string[] _articles = { "the", "at", "an", "a", "in", "to", "about", "who", "is", "what", "through", "towards" };
+
         public void SetUp()
         {
             // setup
@@ -185,18 +187,29 @@ namespace GD12_1133_Assignment2_MaddieLi
             string input = trimmed.ToLower(); // make lowercase
 
             // SPLIT STRING
-            string[] _inputList = input.Split(" ");
+            List<string> _inputList = input.Split(" ").ToList();
 
-            for (int i = 0; i < _inputList.Length; i++)
+            // remove articles
+            for (int i = 0; i < _articles.Length; i++)
             {
-                // SHORTEN INPUT
+                while (_inputList.Contains(_articles[i]))
+                {
+                    _inputList.Remove(_articles[i]);
+                }
+            }
+
+            // SHORTEN INPUT
+            for (int i = 0; i < _inputList.Count; i++)
+            {
+                
                 if (Abbrv.ContainsKey(_inputList[i]))
                 {
                     _inputList[i] = Abbrv[_inputList[i]];
                 }
+                
             }
 
-            int _wordsInInput = _inputList.Length;
+            int _wordsInInput = _inputList.Count;
 
             string _inputVerb = "";
             string _inputSubject = "";
@@ -330,6 +343,195 @@ namespace GD12_1133_Assignment2_MaddieLi
                             {
                                 TurnUpdate(player);
                                 PlayerLocation.OnRoomEnter();
+                            }
+                            return;
+                        case "boat":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[0, 0], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[0, 0], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
+                            }
+                            return;
+                        case "dock":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[0, 1], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[0, 1], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
+                            }
+                            return;
+                        case "armory":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[0, 2], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[0, 2], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
+                            }
+                            return;
+                        case "observation":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[1, 0], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[1, 0], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
+                            }
+                            return;
+                        case "bay":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[1, 1], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[1, 1], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
+                            }
+                            return;
+                        case "warehouse":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[1, 2], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[1, 2], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
+                            }
+                            return;
+                        case "security":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[2, 0], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[2, 0], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
+                            }
+                            return;
+                        case "gate":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[2, 1], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[2, 1], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
+                            }
+                            return;
+                        case "office":
+                            if (PlayerLocation.IsRoomAllowed(gameMap.roomArray[2, 2], PlayerLocation))
+                            {
+                                Move.Room(gameMap.roomArray[2, 2], player);
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't get to that room from here.");
+                                return;
+                            }
+
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            else
+                            {
+                                Console.WriteLine("You can't go that way.");
                             }
                             return;
                         default:
