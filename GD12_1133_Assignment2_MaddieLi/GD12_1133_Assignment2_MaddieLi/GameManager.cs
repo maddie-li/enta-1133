@@ -30,14 +30,16 @@ namespace GD12_1133_Assignment2_MaddieLi
         int Points = 0;
         bool HasPickedUpRocket = false;
         bool HasPickedUpTape = false;
+        bool HasPickedUpKey = false;
 
         // characters
         public Player player;
 
         // items
         public List<BaseItem> ItemsInGame = new List<BaseItem>();
-        public Weapon rocket;
         public Item key;
+        public Item rocket;
+        public Item tape;
 
         // utility classes
         ProjectText write = new ProjectText();
@@ -69,6 +71,8 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             { "rocket launcher", "rocket" },
             { "launcher", "rocket" },
+
+            { "security tape", "tape" },
 
             // ROOMS
             { "observation deck", "observation" },
@@ -117,10 +121,8 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             player = new Player(boat, new List<BaseItem> { });
 
-            rocket = new Weapon("Rocket launcher", "A rocket launcher", "A weapon you can use.", 20, armory);
-            key = new Item("Key card", "A key card", "A key card for the offfice.", boat);
-            ItemsInGame.Add(rocket);
-            ItemsInGame.Add(key);
+           
+            
 
 
             StartGame(boat);
@@ -327,31 +329,70 @@ namespace GD12_1133_Assignment2_MaddieLi
 
                         // EXAMINE ROOM
                         case "boat":
-                            Look.Examine(gameMap.roomArray[0,0]);
+                            Look.Describe(gameMap.roomArray[0,0]);
                             return;
                         case "dock":
-                            Look.Examine(gameMap.roomArray[0, 1]);
+                            Look.Describe(gameMap.roomArray[0, 1]);
                             return;
                         case "armory":
-                            Look.Examine(gameMap.roomArray[0, 2]);
+                            Look.Describe(gameMap.roomArray[0, 2]);
                             return;
                         case "observation":
-                            Look.Examine(gameMap.roomArray[1, 0]);
+                            Look.Describe(gameMap.roomArray[1, 0]);
                             return;
                         case "bay":
-                            Look.Examine(gameMap.roomArray[1, 1]);
+                            Look.Describe(gameMap.roomArray[1, 1]);
                             return;
                         case "warehouse":
-                            Look.Examine(gameMap.roomArray[1, 2]);
+                            Look.Describe(gameMap.roomArray[1, 2]);
                             return;
                         case "security":
-                            Look.Examine(gameMap.roomArray[2, 0]);
+                            Look.Describe(gameMap.roomArray[2, 0]);
                             return;
                         case "gate":
-                            Look.Examine(gameMap.roomArray[2, 1]);
+                            Look.Describe(gameMap.roomArray[2, 1]);
                             return;
                         case "office":
-                            Look.Examine(gameMap.roomArray[2, 2]);
+                            Look.Describe(gameMap.roomArray[2, 2]);
+                            return;
+
+                    }
+                    break;
+                case "search":
+                    switch (_inputSubject)
+                    {
+                        // EXAMINE ROOM
+                        
+                        case "armory":
+                            if (!HasPickedUpRocket) 
+                            {
+                                rocket = new Weapon("Rocket launcher", "A rocket launcher", "A weapon you can use.", 20, gameMap.roomArray[0, 2]);
+                                HasPickedUpRocket = true;
+                                ItemsInGame.Add(rocket);
+                            }
+                            TurnUpdate(player);
+                            Look.Describe(gameMap.roomArray[0, 2]);
+                            return;
+                        case "security":
+                            if (!HasPickedUpKey)
+                            {
+                                key = new Item("Key card", "A key card", "A key card. What room could you get into with this?", gameMap.roomArray[2, 0]);
+                                Console.WriteLine(key.Look);
+                                HasPickedUpKey = true;
+                                ItemsInGame.Add(key);
+                            }
+                            TurnUpdate(player);
+                            Look.Describe(gameMap.roomArray[2, 0]);
+                            return;
+                        case "office":
+                            if (!HasPickedUpTape)
+                            {
+                                tape = new Item("Security tape", "A security tape", "The security tape.", gameMap.roomArray[2, 2]);
+                                HasPickedUpTape = true;
+                                ItemsInGame.Add(tape);
+                            }
+                            TurnUpdate(player);
+                            Look.Describe(gameMap.roomArray[2, 2]);
                             return;
 
                     }

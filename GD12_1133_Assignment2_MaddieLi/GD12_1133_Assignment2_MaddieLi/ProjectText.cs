@@ -1,4 +1,5 @@
 ﻿using GD12_1133_Assignment2_MaddieLi.Abstract;
+using GD12_1133_Assignment2_MaddieLi.Items;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace GD12_1133_Assignment2_MaddieLi
 {
     public class ProjectText
     {
+        
 
         public string AssignmentText = @"
             Assignment 2 Maddie Li GD12 ENTA 1133";
