@@ -26,20 +26,22 @@ namespace GD12_1133_Assignment2_MaddieLi
         {
             string _commandsText = @"
             COMMANDS
-                i, inv, inventory / check inventory
+                i, inventory / check inventory
                 l, look / look at surroundings
-                h, help, commands / show commands
-                score / show score";
+                h, help / show commands
+                score / show score
+";
 
             string _actionCommandsText = @"
             ACTION COMMANDS
                 x, examine / look at item
+                search / investigate room
                 grab, get, t, take / pick up item
                 drop / drop item
-                go / go in a direction
+                go, walk, move / go in a direction
             ";
 
-            string _directionsCommandsText = "DIRECTIONS" + "\n\t\t" + "north\n\t\tsouth\n\t\teast\n\t\twest";
+            string _directionsCommandsText = "DIRECTIONS" + "\n\t\t" + "n, north\n\t\ts, south\n\t\te, east\n\t\tw, west\n";
             string _helpText = _commandsText + _actionCommandsText + _directionsCommandsText;
 
             return _helpText;

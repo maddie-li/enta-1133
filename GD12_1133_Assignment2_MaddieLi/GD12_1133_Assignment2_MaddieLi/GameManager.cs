@@ -93,22 +93,22 @@ namespace GD12_1133_Assignment2_MaddieLi
             dock.CanExit(Dir.Direction.e);
             dock.CanExit(Dir.Direction.s);
 
-            BaseRoom armory = gameMap.RoomSetup(0, 2, "Armory", "The way back out is west", "A strangely constructed room filled with weapons.");
+            BaseRoom armory = gameMap.RoomSetup(0, 2, "Armory", "The way back out is west.", "A strangely constructed room filled with weapons.");
             armory.CanExit(Dir.Direction.w);
 
             BaseRoom observation = gameMap.RoomSetup(1, 0, "Observation deck", "The loading bay is east and security is south.", "Raised above the port, you can see everything.");
             observation.CanExit(Dir.Direction.e);
             observation.CanExit(Dir.Direction.s);
 
-            BaseRoom bay = gameMap.RoomSetup(1, 1, "Loading bay", "The dock is north, the warehouse east, the gate south, and the observation deck north.", "A busy central hub where people shuttle product in all four directions..");
+            BaseRoom bay = gameMap.RoomSetup(1, 1, "Loading bay", "The dock is north, the warehouse east, the gate south, and the observation deck west.", "A busy central hub where people shuttle product in all four directions..");
             bay.CanExit(Dir.Direction.n);
             bay.CanExit(Dir.Direction.e);
             bay.CanExit(Dir.Direction.w);
             
 
-            BaseRoom warehouse = gameMap.RoomSetup(1, 2, "Warehouse", "The loading bay is west and the locked office is south.", "A cavernous warehouse.");
+            BaseRoom warehouse = gameMap.RoomSetup(1, 2, "Warehouse", "The loading bay is west and the office is south.", "A cavernous warehouse.");
             warehouse.CanExit(Dir.Direction.w);
-            warehouse.CanExit(Dir.Direction.s);
+            warehouse.CannotExit(Dir.Direction.s);
 
             BaseRoom security = gameMap.RoomSetup(2, 0, "Security", "The observation deck is north.", "A messsy and outdated security room full of camera feeds.");
             security.CanExit(Dir.Direction.n);
@@ -121,13 +121,10 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             player = new Player(boat, new List<BaseItem> { });
 
-           
-            
-
-
             StartGame(boat);
         }
         
+
 
         public void StartGame(BaseRoom _startingRoom) // start game and loop
         {
@@ -142,6 +139,13 @@ namespace GD12_1133_Assignment2_MaddieLi
                 GetInput();
                 TurnUpdate(player);
             }
+
+        }
+
+        public void GainPoint(int _points) 
+        {
+            Console.WriteLine($"+{_points} score!");
+            Points += _points;
 
         }
 
@@ -214,6 +218,10 @@ namespace GD12_1133_Assignment2_MaddieLi
                     case "i":
                         Look.Inventory(player);
                         return;
+                    case "points":
+                    case "score":
+                        Console.WriteLine($"You have {Points} points.");
+                        return;
 
                     // MOVEMENT
                     case "n":
@@ -264,6 +272,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                 // GO IN DIRECTION
                 case "go":
                 case "walk":
+                case "move":
                     switch (_inputSubject)
                     {
                         // MOVEMENT
@@ -284,6 +293,30 @@ namespace GD12_1133_Assignment2_MaddieLi
                             }
                             return;
                         case "s":
+                            if (PlayerLocation == gameMap.roomArray[1, 2]) // getting into office
+                            {
+                                if (!HasPickedUpKey)
+                                {
+                                    Console.WriteLine("You can't get into the office. It's locked.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You use the key card to unlock the office door.");
+                                }
+                            }
+                            if (PlayerLocation == gameMap.roomArray[1, 1]) // getting into gate
+                            {
+                                if (!HasPickedUpTape)
+                                {
+                                    Console.WriteLine("You shouldn't leave until you've retrieved the security tape.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You make your escape through the gate...");
+                                    GameEnd("win");
+
+                                }
+                            }
                             Move.Direction(Directions.Dir.Direction.s, player);
                             if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
                             {
@@ -362,13 +395,15 @@ namespace GD12_1133_Assignment2_MaddieLi
                     switch (_inputSubject)
                     {
                         // EXAMINE ROOM
-                        
                         case "armory":
                             if (!HasPickedUpRocket) 
                             {
-                                rocket = new Weapon("Rocket launcher", "A rocket launcher", "A weapon you can use.", 20, gameMap.roomArray[0, 2]);
+                                rocket = new Weapon("Rocket launcher", "A rocket launcher", "A weapon you can use. Looks like it could do a lot of damage.", 20, gameMap.roomArray[0, 2]);
                                 HasPickedUpRocket = true;
                                 ItemsInGame.Add(rocket);
+                                Console.WriteLine("Most of the weapons are concealed under tarps, but one catches your eye...");
+                                GainPoint(1);
+                                Console.WriteLine();
                             }
                             TurnUpdate(player);
                             Look.Describe(gameMap.roomArray[0, 2]);
@@ -379,7 +414,11 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 key = new Item("Key card", "A key card", "A key card. What room could you get into with this?", gameMap.roomArray[2, 0]);
                                 Console.WriteLine(key.Look);
                                 HasPickedUpKey = true;
+                                gameMap.roomArray[1, 2].CanExit(Dir.Direction.s);
                                 ItemsInGame.Add(key);
+                                Console.WriteLine("In a drawer lies a key card... but what room could this get you into?");
+                                GainPoint(2);
+                                Console.WriteLine();
                             }
                             TurnUpdate(player);
                             Look.Describe(gameMap.roomArray[2, 0]);
@@ -393,6 +432,9 @@ namespace GD12_1133_Assignment2_MaddieLi
                             }
                             TurnUpdate(player);
                             Look.Describe(gameMap.roomArray[2, 2]);
+                            return;
+                        default:
+                            Console.WriteLine("There is nothing of note in this area.");
                             return;
 
                     }
@@ -409,6 +451,9 @@ namespace GD12_1133_Assignment2_MaddieLi
                             return;
                         case "rocket":
                             Take.Get(rocket, player);
+                            return;
+                        case "tape":
+                            Take.Get(tape, player);
                             return;
                         default:
                             Console.WriteLine(write.BadInput);
@@ -457,6 +502,21 @@ namespace GD12_1133_Assignment2_MaddieLi
         public void CombatBegin(Combatant player, Combatant enemy)
         {
             Console.WriteLine($"{player.Name} vs. {enemy.Name}");
+        }
+
+        public void GameEnd(string outcome)
+        {
+            switch (outcome)
+            {
+                case "win":
+                    Console.WriteLine("Congratulations! You won! Yay!");
+                    break;
+                case "lose":
+                    Console.WriteLine("Womp womp. You lost.");
+                    break;
+            }
+
+            Console.WriteLine($"You finished the game with {Points} points.");
         }
     }
 }

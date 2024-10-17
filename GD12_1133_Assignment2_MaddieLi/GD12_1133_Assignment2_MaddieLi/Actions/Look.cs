@@ -26,14 +26,12 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             }
             else // print each item
             {
-                Console.Write("\nYou are holding ");
+                Console.WriteLine("\nYou are holding: ");
 
                 foreach (String i in _inventory)
                 {
                     Console.WriteLine(i.ToLower());
                 }
-
-                Console.WriteLine(".");
             }
         }
 
@@ -54,7 +52,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
 
         public void Describe(BaseRoom _targetRoom)
         {
-            Console.WriteLine($"{_targetRoom.Name}\n{_targetRoom.Look}\n{_targetRoom.Glance}");
+            Console.WriteLine($"{_targetRoom.Name.ToUpper()}\n{_targetRoom.Look}\n{_targetRoom.Glance}");
 
             _describeContents( _targetRoom );
             
@@ -68,7 +66,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             }
             else
             {
-                Console.WriteLine($"{_targetRoom.Name}\n{_targetRoom.Look}");
+                Console.WriteLine($"{_targetRoom.Name.ToUpper()}\n{_targetRoom.Look}\n{_targetRoom.Glance}");
                 _targetRoom.HasBeenEntered = true;
             }
 
