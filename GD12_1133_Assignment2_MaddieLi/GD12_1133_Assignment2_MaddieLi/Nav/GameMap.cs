@@ -11,11 +11,11 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
     internal class GameMap
     {
         int MapSize = 3;
-        public Room[,] roomArray;
+        public BaseRoom[,] roomArray;
 
         public void CreateMap() // sets up map and makes empty 
         {
-            roomArray = new BasicRoom[MapSize, MapSize];
+            roomArray = new Room[MapSize, MapSize];
 
             for (int x = 0; x < MapSize; x++)
             {
@@ -26,13 +26,8 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
             }
         }
 
-        private Room CreateRoom(int x, int y)
+        private BaseRoom CreateRoom(int x, int y)
         {
-            var _basicRoomCoords = new List<(int, int)>
-            {
-                (0, 0),
-            };
-
             var _combatRoomCoords = new List<(int, int)>
             {
                 (0, 1),
@@ -47,20 +42,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
                 (2, 0),
             };
 
-            var _bossRoomCoords = new List<(int, int)>
-            {
-                (1, 0),
-                (2, 2),
-            };
-
-
-            if (_basicRoomCoords.Contains((x, y))) 
-            {
-                return new BasicRoom(x, y, $" Room at ({x}, {y})",
-                                        $"Short description of Room.",
-                                        $"Long description of Room.");
-            }
-            else if (_combatRoomCoords.Contains((x, y)))
+            if (_combatRoomCoords.Contains((x, y)))
             {
                 return new CombatRoom(x, y, $" Combat Room at ({x}, {y})",
                                         $"Short description of Combat Room.",
@@ -72,23 +54,17 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
                                         $"Short description of Treasyure Room.",
                                         $"Long description of Treasure Room.");
             }
-            else if (_bossRoomCoords.Contains((x, y)))
-            {
-                return new BossRoom(x, y, $" Boss Room at ({x}, {y})",
-                                        $"Short description of Boss Room.",
-                                        $"Long description of Boss Room.");
-            }
             else
             {
-                return new BasicRoom(x, y, $" Room at ({x}, {y})",
+                return new Room(x, y, $" Room at ({x}, {y})",
                                         $"Short description of Room.",
                                         $"Long description of Room.");
             }
         }
 
-        public Room RoomSetup(int x, int y, string name, string glance, string look)
+        public BaseRoom RoomSetup(int x, int y, string name, string glance, string look)
         {
-            BasicRoom room = (BasicRoom)roomArray[x, y];
+            Room room = (Room)roomArray[x, y];
 
             room.Name = name;
             room.XPos = x;
@@ -106,19 +82,19 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
             {
                 for (int y = 0; y < MapSize; y++)
                 {
-                    Room currentRoom = (Room)roomArray[x, y];
+                    BaseRoom currentRoom = (BaseRoom)roomArray[x, y];
 
-                    Room northRoom = FindRoom(x, y, Directions.Dir.Direction.n);
-                    Room eastRoom = FindRoom(x, y, Directions.Dir.Direction.e);
-                    Room southRoom = FindRoom(x, y, Directions.Dir.Direction.s);
-                    Room westRoom = FindRoom(x, y, Directions.Dir.Direction.w);
+                    BaseRoom northRoom = FindRoom(x, y, Directions.Dir.Direction.n);
+                    BaseRoom eastRoom = FindRoom(x, y, Directions.Dir.Direction.e);
+                    BaseRoom southRoom = FindRoom(x, y, Directions.Dir.Direction.s);
+                    BaseRoom westRoom = FindRoom(x, y, Directions.Dir.Direction.w);
 
                     currentRoom.SetRooms(northRoom, eastRoom, southRoom, westRoom);
                 }
             }
         }
 
-        public Room FindRoom(int x, int y, Directions.Dir.Direction dir)
+        public BaseRoom FindRoom(int x, int y, Directions.Dir.Direction dir)
         {
             switch (dir)
             {
@@ -135,7 +111,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
                     if (y > 0) return roomArray[x, y - 1];
                     break;
             }
-            return null;
+            return null!;
         }
 
     }

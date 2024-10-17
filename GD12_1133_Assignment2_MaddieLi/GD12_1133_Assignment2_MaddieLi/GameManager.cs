@@ -1,6 +1,6 @@
 ﻿using GD12_1133_Assignment2_MaddieLi.Abstract;
 using GD12_1133_Assignment2_MaddieLi.Directions;
-using GD12_1133_Assignment2_MaddieLi.People;
+using GD12_1133_Assignment2_MaddieLi.Characters;
 using GD12_1133_Assignment2_MaddieLi.Items;
 using GD12_1133_Assignment2_MaddieLi.Rooms;
 using GD12_1133_Assignment2_MaddieLi.Actions;
@@ -22,19 +22,30 @@ namespace GD12_1133_Assignment2_MaddieLi
     {
         // variables
         bool isGamePlaying = true;
-        public Room? PlayerLocation;
+        public BaseRoom PlayerLocation;
 
         public string? rawString; // raw input
 
+        // objectvies variables
+        int Points = 0;
+        bool HasPickedUpRocket = false;
+        bool HasPickedUpTape = false;
+
         // characters
-        public List<BaseCharacter> CharactersInGame = new List<BaseCharacter>();
-        public Character player;
-        public Character guard;
+        public Player player;
 
         // items
-        public List<Item> ItemsInGame = new List<Item>();
-        public Item gun;
+        public List<BaseItem> ItemsInGame = new List<BaseItem>();
+        public Weapon rocket;
         public Item key;
+
+        // utility classes
+        ProjectText write = new ProjectText();
+
+        GameMap gameMap = new GameMap();
+        Look Look = new Look();
+        Move Move = new Move();
+        Take Take = new Take();
 
         // parser dictionary
 
@@ -54,6 +65,10 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             // ITEMS
             { "key card", "key" },
+            { "card", "key" },
+
+            { "rocket launcher", "rocket" },
+            { "launcher", "rocket" },
 
             // ROOMS
             { "observation deck", "observation" },
@@ -61,70 +76,58 @@ namespace GD12_1133_Assignment2_MaddieLi
 
         };
 
-
-        // utility classes
-        ProjectText write = new ProjectText();
-
-        GameMap gameMap = new GameMap();
-        Look Look = new Look();
-        Move Move = new Move();
-        Take Take = new Take();
-
-
-
         public void SetUp()
         {
             // setup
 
             gameMap.CreateMap();
 
-            Room boat = gameMap.RoomSetup(0, 0, "Boat", "The way out is east.", "The boat you arrived in.");
+            BaseRoom boat = gameMap.RoomSetup(0, 0, "Boat", "The way out is east.", "The boat you arrived in.");
             boat.CanExit(Dir.Direction.e);
 
-            Room dock = gameMap.RoomSetup(0, 1, "Dock", "There is a door in the east wall and the loading bay is south.", "A loading dock, exposed to the ocean.");
+            BaseRoom dock = gameMap.RoomSetup(0, 1, "Dock", "There is a door in the east wall and the loading bay is south.", "A loading dock, exposed to the ocean.");
             dock.CanExit(Dir.Direction.e);
             dock.CanExit(Dir.Direction.s);
 
-            Room armory = gameMap.RoomSetup(0, 2, "Armory", "The way back out is west", "A strangely constructed room filled with weapons.");
+            BaseRoom armory = gameMap.RoomSetup(0, 2, "Armory", "The way back out is west", "A strangely constructed room filled with weapons.");
             armory.CanExit(Dir.Direction.w);
 
-            Room observation = gameMap.RoomSetup(1, 0, "Observation deck", "The loading bay is east and security is south.", "Raised above the port, you can see everything.");
+            BaseRoom observation = gameMap.RoomSetup(1, 0, "Observation deck", "The loading bay is east and security is south.", "Raised above the port, you can see everything.");
             observation.CanExit(Dir.Direction.e);
             observation.CanExit(Dir.Direction.s);
 
-            Room bay = gameMap.RoomSetup(1, 1, "Loading bay", "The dock is north, the warehouse east, the gate south, and the observation deck north.", "A busy central hub where people shuttle product in all four directions..");
+            BaseRoom bay = gameMap.RoomSetup(1, 1, "Loading bay", "The dock is north, the warehouse east, the gate south, and the observation deck north.", "A busy central hub where people shuttle product in all four directions..");
+            bay.CanExit(Dir.Direction.n);
             bay.CanExit(Dir.Direction.e);
-            bay.CanExit(Dir.Direction.e);
-
-            Room warehouse = gameMap.RoomSetup(1, 2, "Warehouse", "The loading bay is west and the locked office is south.", "A cavernous warehouse.");
             bay.CanExit(Dir.Direction.w);
-            bay.CanExit(Dir.Direction.s);
+            
 
-            Room security = gameMap.RoomSetup(2, 0, "Security", "The observation deck is north.", "A messsy and outdated security room full of camera feeds.");
-            bay.CanExit(Dir.Direction.n);
+            BaseRoom warehouse = gameMap.RoomSetup(1, 2, "Warehouse", "The loading bay is west and the locked office is south.", "A cavernous warehouse.");
+            warehouse.CanExit(Dir.Direction.w);
+            warehouse.CanExit(Dir.Direction.s);
 
-            Room gate = gameMap.RoomSetup(2, 1, "Gate", "", "");
-            bay.CanExit(Dir.Direction.n);
+            BaseRoom security = gameMap.RoomSetup(2, 0, "Security", "The observation deck is north.", "A messsy and outdated security room full of camera feeds.");
+            security.CanExit(Dir.Direction.n);
 
-            Room office = gameMap.RoomSetup(2, 2, "Office", "The warehouse is north", "Lavishly decorated.");
-            bay.CanExit(Dir.Direction.n);
+            BaseRoom gate = gameMap.RoomSetup(2, 1, "Gate", "", "");
+            gate.CanExit(Dir.Direction.n);
 
-            player = new Character("The player", "Yourself", "It's you, the player.", 10, boat, new List<Item> { });
-            guard = new Character("Securty guard", "A security guard", "A security guard employed by the port", 10, dock, new List<Item> { });
-            CharactersInGame.Add(player);
-            CharactersInGame.Add(guard);
+            BaseRoom office = gameMap.RoomSetup(2, 2, "Office", "The warehouse is north", "Lavishly decorated.");
+            office.CanExit(Dir.Direction.n);
 
-            gun = new Weapon("Gun", "A gun", "A weapon you can use.", 10, armory);
-            key = new BasicItem("Key card", "A key card", "A key card for the offfice.", boat);
-            ItemsInGame.Add(gun);
+            player = new Player(boat, new List<BaseItem> { });
+
+            rocket = new Weapon("Rocket launcher", "A rocket launcher", "A weapon you can use.", 20, armory);
+            key = new Item("Key card", "A key card", "A key card for the offfice.", boat);
+            ItemsInGame.Add(rocket);
             ItemsInGame.Add(key);
 
 
             StartGame(boat);
         }
+        
 
-
-        public void StartGame(Room _startingRoom) // start game and loop
+        public void StartGame(BaseRoom _startingRoom) // start game and loop
         {
             Console.WriteLine(write.IntroText + "\n");
 
@@ -140,23 +143,14 @@ namespace GD12_1133_Assignment2_MaddieLi
 
         }
 
-        public void TurnUpdate(BaseCharacter player)
+        public void TurnUpdate(Player player)
         {
             // UPDATE PLAYER LOCATION
-            PlayerLocation = player.CurrentRoom;
+            PlayerLocation = player.CurrentRoom!;
 
-            // UPDATE CHARACTERS IN ROOM
-            player.CurrentRoom.Inhabitants.Clear();
             player.CurrentRoom.Contents.Clear();
 
-            foreach (BaseCharacter character in CharactersInGame)
-            {
-                if (character.CurrentRoom == PlayerLocation)
-                {
-                    player.CurrentRoom.Inhabitants.Add(character);
-                }
-            }
-            foreach (Item item in ItemsInGame)
+            foreach (BaseItem item in ItemsInGame)
             {
                 if (item.CurrentRoom == PlayerLocation)
                 {
@@ -230,7 +224,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                     // EXAMINE OBJECTS
                     case "key":
                     case "card":
-                    case "gun":
+                    case "rocket":
                     case "player":
                     case "self":
                     case "guard":
@@ -320,15 +314,12 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "card":
                             Look.Examine(key);
                             return;
-                        case "gun":
-                            Look.Examine(gun);
+                        case "rocket":
+                            Look.Examine(rocket);
                             return;
                         case "player":
                         case "self":
                             Look.Examine(player);
-                            return;
-                        case "guard":
-                            Look.Examine(guard);
                             return;
                         default:
                             Console.WriteLine(write.BadInput);
@@ -375,8 +366,8 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "card":
                             Take.Get(key, player);
                             return;
-                        case "gun":
-                            Take.Get(gun, player);
+                        case "rocket":
+                            Take.Get(rocket, player);
                             return;
                         default:
                             Console.WriteLine(write.BadInput);
@@ -392,8 +383,8 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "card":
                             Take.Drop(key, player);
                             return;
-                        case "gun":
-                            Take.Drop(gun, player);
+                        case "rocket":
+                            Take.Drop(rocket, player);
                             return;
                         case "use":
                             return;
@@ -411,6 +402,20 @@ namespace GD12_1133_Assignment2_MaddieLi
             }
 
 
+        }
+
+        public void CombatSetup()
+        {
+            Combatant _player = new Combatant("Player", null!, null!, 100, null!, new List<BaseItem> { });
+            Combatant _enemy = new Combatant("Guard", null!, null!, 75, null!, new List<BaseItem> { });
+
+            CombatBegin(_player, _enemy);
+
+        }
+
+        public void CombatBegin(Combatant player, Combatant enemy)
+        {
+            Console.WriteLine($"{player.Name} vs. {enemy.Name}");
         }
     }
 }

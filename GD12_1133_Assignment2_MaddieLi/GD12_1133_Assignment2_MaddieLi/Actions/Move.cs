@@ -1,6 +1,7 @@
 ﻿using GD12_1133_Assignment2_MaddieLi.Abstract;
 using GD12_1133_Assignment2_MaddieLi.Directions;
 using GD12_1133_Assignment2_MaddieLi.Nav;
+using GD12_1133_Assignment2_MaddieLi.Characters;
 using GD12_1133_Assignment2_MaddieLi.Rooms;
 
 using System;
@@ -15,11 +16,10 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
     {
         GameMap gameMap = new GameMap();
 
-        public void Direction(Directions.Dir.Direction dir, BaseCharacter _targetChar)
+        public void Direction(Directions.Dir.Direction dir, Player _targetChar)
         {
-            // Console.WriteLine((int)dir);
-            Room _currentRoom = _targetChar.CurrentRoom;
-            Room _newRoom = null; ; 
+            BaseRoom _currentRoom = _targetChar.CurrentRoom;
+            BaseRoom _newRoom = null!; 
 
             int _currentRoomX = _currentRoom.XPos;
             int _currentRoomY = _currentRoom.YPos;
@@ -29,25 +29,25 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
                 case Directions.Dir.Direction.n:
                     if (_currentRoom.IsDirectionAllowed(Dir.Direction.n))
                     {
-                        _newRoom = _currentRoom.North;
+                        _newRoom = _currentRoom.NorthExit;
                     }
                     break;
                 case Directions.Dir.Direction.e:
                     if (_currentRoom.IsDirectionAllowed(Dir.Direction.e))
                     {
-                        _newRoom = _currentRoom.East;
+                        _newRoom = _currentRoom.EastExit;
                     }
                     break;
                 case Directions.Dir.Direction.s:
                     if (_currentRoom.IsDirectionAllowed(Dir.Direction.s))
                     {
-                        _newRoom = _currentRoom.South;
+                        _newRoom = _currentRoom.SouthExit;
                     }
                     break;
                 case Directions.Dir.Direction.w:
                     if (_currentRoom.IsDirectionAllowed(Dir.Direction.w))
                     {
-                        _newRoom = _currentRoom.West;
+                        _newRoom = _currentRoom.WestExit;
                     }
                     break;
             }
@@ -55,7 +55,6 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             if (_newRoom != null) { 
             
                 _targetChar.CurrentRoom = _newRoom;
-                // Console.WriteLine($"Moving from {_currentRoom.Name} to {_newRoom.Name}!");
             }
             else
             {

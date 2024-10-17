@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GD12_1133_Assignment2_MaddieLi.Abstract
 {
-    public abstract class Item : IInfo // item is a thing that can be picked up or used
+    public abstract class BaseItem : IInfo // item is a thing that can be picked up or used
     {
         // INFO
         public abstract string Name { get; set; } // name
@@ -15,13 +15,13 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         public abstract string Look { get; set; } // long description (new room description, examining object)
 
         // FUNCTIONS
-        public abstract void Use(Item? target = null);
+        public abstract void Use(BaseItem? target = null); // use function
 
         // PROPERTIES
-        public abstract Room CurrentRoom { get; set; } // name
+        public abstract BaseRoom CurrentRoom { get; set; } // name
 
         // CONSTRUCTOR
-        public Item(string Name, string Glance, string Look, Room CurrentRoom)
+        public BaseItem(string Name, string Glance, string Look, BaseRoom CurrentRoom)
         {
             this.Name = Name;
             this.Glance = Glance;

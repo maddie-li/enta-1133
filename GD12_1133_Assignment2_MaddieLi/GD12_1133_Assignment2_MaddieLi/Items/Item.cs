@@ -2,21 +2,21 @@
 {
     using GD12_1133_Assignment2_MaddieLi.Abstract;
     using GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces;
-    public class BasicItem : Item
+    public class Item : BaseItem
     {
         public override string Name { get; set; } // name
         public override string Glance { get; set; } // short description (known room description, object in inventory or location)
         public override string Look { get; set; } // long description (new room description, examining object)
 
-        public override Room CurrentRoom { get; set; } // long description (new room description, examining object)
+        public override BaseRoom CurrentRoom { get; set; } // long description (new room description, examining object)
 
-        public override void Use(Item? target = null)
+        public override void Use(BaseItem? target = null)
         {
 
         }
 
         // CONSTRUCTOR
-        public BasicItem(string Name, string Glance, string Look, Room CurrentRoom) : base(Name, Glance, Look, CurrentRoom)
+        public Item(string Name, string Glance, string Look, BaseRoom CurrentRoom) : base(Name, Glance, Look, CurrentRoom)
         {
             this.Name = Name;
             this.Glance = Glance;

@@ -9,20 +9,15 @@ namespace GD12_1133_Assignment2_MaddieLi.Items
     using GD12_1133_Assignment2_MaddieLi.Abstract;
     using System.Xml.Linq;
 
-    public class Weapon : BasicItem
+    public class Weapon : Item
     {
-        private string v1;
-        private string v2;
-        private string v3;
-        private Room boat;
-
         public override string Name { get; set; } // name
         public override string Glance { get; set; } // short description (known room description, object in inventory or location)
         public override string Look { get; set; } // long description (new room description, examining object)
 
-        public override Room CurrentRoom {  get; set; }  
+        public override BaseRoom CurrentRoom {  get; set; }  
 
-        public override void Use(Item? target = null)
+        public override void Use(BaseItem? target = null)
         {
 
         }
@@ -31,7 +26,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Items
         public int Damage { get; set; }
 
         // CONSTRUCTOR
-        public Weapon(string name, string glance, string look, int damage, Room currentRoom)
+        public Weapon(string name, string glance, string look, int damage, BaseRoom currentRoom)
        : base(name, glance, look, currentRoom) 
         {
             Look = look;
