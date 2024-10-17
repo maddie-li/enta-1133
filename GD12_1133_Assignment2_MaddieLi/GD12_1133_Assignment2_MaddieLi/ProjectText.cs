@@ -42,5 +42,7 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             return _helpText;
         }
+
+        public string BadInput = "Invalid input! Try again.";
     }
 }

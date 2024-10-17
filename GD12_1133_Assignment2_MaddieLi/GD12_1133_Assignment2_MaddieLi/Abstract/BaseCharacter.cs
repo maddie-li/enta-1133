@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GD12_1133_Assignment2_MaddieLi.Abstract
 {
-    public abstract class Character : IInfo
+    public abstract class BaseCharacter : IInfo
     {
         // INFO
         public abstract string Name { get; set; } // name

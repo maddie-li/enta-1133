@@ -11,7 +11,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
     internal class GameMap
     {
         int MapSize = 3;
-        Room[,] roomArray;
+        public Room[,] roomArray;
 
         public void CreateMap() // sets up map and makes empty 
         {

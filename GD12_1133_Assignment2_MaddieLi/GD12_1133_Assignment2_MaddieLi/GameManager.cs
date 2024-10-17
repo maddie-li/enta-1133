@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Reflection.Emit;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GD12_1133_Assignment2_MaddieLi
 {
@@ -26,7 +27,7 @@ namespace GD12_1133_Assignment2_MaddieLi
         public string? rawString; // raw input
 
         // characters
-        public List<Character> CharactersInGame = new List<Character>();
+        public List<BaseCharacter> CharactersInGame = new List<BaseCharacter>();
         public Character player;
         public Character guard;
 
@@ -39,12 +40,24 @@ namespace GD12_1133_Assignment2_MaddieLi
 
         public Dictionary<string, string> Abbrv = new Dictionary<string, string>()
         {
+            // COMMANDS
             { "look", "l" },
+            { "examine", "x" },
             { "help", "h" },
+            { "inventory", "i" },
+
+            // DIRECTION
             { "north", "n" },
             { "east", "e" },
             { "south", "s" },
             { "west", "w" },
+
+            // ITEMS
+            { "key card", "key" },
+
+            // ROOMS
+            { "observation deck", "observation" },
+            { "loading bay", "bay" },
 
         };
 
@@ -55,15 +68,16 @@ namespace GD12_1133_Assignment2_MaddieLi
         GameMap gameMap = new GameMap();
         Look Look = new Look();
         Move Move = new Move();
+        Take Take = new Take();
 
-        
+
 
         public void SetUp()
         {
             // setup
 
             gameMap.CreateMap();
-            
+
             Room boat = gameMap.RoomSetup(0, 0, "Boat", "The way out is east.", "The boat you arrived in.");
             boat.CanExit(Dir.Direction.e);
 
@@ -95,13 +109,13 @@ namespace GD12_1133_Assignment2_MaddieLi
             Room office = gameMap.RoomSetup(2, 2, "Office", "The warehouse is north", "Lavishly decorated.");
             bay.CanExit(Dir.Direction.n);
 
-            player = new Combatant("The player", "Yourself", "It's you, the player", 10, boat, new List<Item> { });
-            guard = new Combatant("Securty guard", "A security guard", "A security guard employed by the port", 10, dock, new List<Item> { });
+            player = new Character("The player", "Yourself", "It's you, the player.", 10, boat, new List<Item> { });
+            guard = new Character("Securty guard", "A security guard", "A security guard employed by the port", 10, dock, new List<Item> { });
             CharactersInGame.Add(player);
             CharactersInGame.Add(guard);
 
-            gun = new Weapon("Gun", "A gun", "A weapon you can use", 10, armory);
-            key = new BasicItem("Key card", "A key card", "A key card for the offfice", boat);
+            gun = new Weapon("Gun", "A gun", "A weapon you can use.", 10, armory);
+            key = new BasicItem("Key card", "A key card", "A key card for the offfice.", boat);
             ItemsInGame.Add(gun);
             ItemsInGame.Add(key);
 
@@ -112,7 +126,7 @@ namespace GD12_1133_Assignment2_MaddieLi
 
         public void StartGame(Room _startingRoom) // start game and loop
         {
-            Console.WriteLine(write.IntroText+"\n");
+            Console.WriteLine(write.IntroText + "\n");
 
             PlayerLocation = _startingRoom;
             TurnUpdate(player);
@@ -123,10 +137,10 @@ namespace GD12_1133_Assignment2_MaddieLi
                 GetInput();
                 TurnUpdate(player);
             }
-            
+
         }
 
-        public void TurnUpdate(Character player)
+        public void TurnUpdate(BaseCharacter player)
         {
             // UPDATE PLAYER LOCATION
             PlayerLocation = player.CurrentRoom;
@@ -135,7 +149,7 @@ namespace GD12_1133_Assignment2_MaddieLi
             player.CurrentRoom.Inhabitants.Clear();
             player.CurrentRoom.Contents.Clear();
 
-            foreach (Character character in CharactersInGame)
+            foreach (BaseCharacter character in CharactersInGame)
             {
                 if (character.CurrentRoom == PlayerLocation)
                 {
@@ -170,62 +184,233 @@ namespace GD12_1133_Assignment2_MaddieLi
             string trimmed = rawString.Trim(); // trim whitespace
             string input = trimmed.ToLower(); // make lowercase
 
-            // SHORTEN INPUT
-            if (Abbrv.ContainsKey(input))
-            {
-                input = Abbrv[input];
+            // SPLIT STRING
+            string[] _inputList = input.Split(" ");
 
+            for (int i = 0; i < _inputList.Length; i++)
+            {
+                // SHORTEN INPUT
+                if (Abbrv.ContainsKey(_inputList[i]))
+                {
+                    _inputList[i] = Abbrv[_inputList[i]];
+                }
             }
 
-            switch (input)
+            int _wordsInInput = _inputList.Length;
+
+            string _inputVerb = "";
+            string _inputSubject = "";
+
+            // ONE WORD INPUT
+            if (_wordsInInput <= 1)
             {
-                case "h":
-                    Console.WriteLine(write.HelpText());
+                _inputSubject = _inputList[0];
+
+                switch (_inputSubject)
+                {
+                    // COMMANDS
+                    case "h":
+                        Console.WriteLine(write.HelpText());
+                        return;
+                    case "l":
+                        Look.Describe(PlayerLocation!);
+                        return;
+                    case "i":
+                        Look.Inventory(player);
+                        return;
+
+                    // MOVEMENT
+                    case "n":
+                    case "e":
+                    case "s":
+                    case "w":
+                        _inputVerb = "go";
+                        break;
+
+                    // EXAMINE OBJECTS
+                    case "key":
+                    case "card":
+                    case "gun":
+                    case "player":
+                    case "self":
+                    case "guard":
+                        _inputVerb = "look";
+                        break;
+
+                    // EXAMINE ROOM
+                    case "boat":
+                    case "dock":
+                    case "armory":
+                    case "observation":
+                    case "bay":
+                    case "warehouse":
+                    case "security":
+                    case "gate":
+                    case "office":
+                        _inputVerb = "look";
+                        break;
+
+                    default:
+                        _inputVerb = "unknown";
+                        break;
+                }
+            }
+            // TWO WRD INPUT
+            else
+            {
+                _inputVerb = _inputList[0];
+                _inputSubject = _inputList[1];
+            }
+
+            // TWO WORD INPUT
+            switch (_inputVerb)
+            {
+                // GO IN DIRECTION
+                case "go":
+                case "walk":
+                    switch (_inputSubject)
+                    {
+                        // MOVEMENT
+                        case "n":
+                            Move.Direction(Directions.Dir.Direction.n, player);
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            return;
+                        case "e":
+                            Move.Direction(Directions.Dir.Direction.e, player);
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            return;
+                        case "s":
+                            Move.Direction(Directions.Dir.Direction.s, player);
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            return;
+                        case "w":
+                            Move.Direction(Directions.Dir.Direction.w, player);
+                            if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                            {
+                                TurnUpdate(player);
+                                PlayerLocation.OnRoomEnter();
+                            }
+                            return;
+                        default:
+                            Console.WriteLine(write.BadInput);
+                            break;
+
+                    }
                     break;
+
+                // LOOK AT SUBJECT
                 case "l":
-                    Look.Describe(PlayerLocation!);
-                    break;
-                case "n":
-                    Move.Direction(Directions.Dir.Direction.n, player);
-                    if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+                case "x":
+                    switch (_inputSubject)
                     {
-                        TurnUpdate(player);
-                        PlayerLocation.OnRoomEnter();
+                        // EXAMINE OBJECTS
+                        case "key":
+                        case "card":
+                            Look.Examine(key);
+                            return;
+                        case "gun":
+                            Look.Examine(gun);
+                            return;
+                        case "player":
+                        case "self":
+                            Look.Examine(player);
+                            return;
+                        case "guard":
+                            Look.Examine(guard);
+                            return;
+                        default:
+                            Console.WriteLine(write.BadInput);
+                            break;
+
+                        // EXAMINE ROOM
+                        case "boat":
+                            Look.Examine(gameMap.roomArray[0,0]);
+                            return;
+                        case "dock":
+                            Look.Examine(gameMap.roomArray[0, 1]);
+                            return;
+                        case "armory":
+                            Look.Examine(gameMap.roomArray[0, 2]);
+                            return;
+                        case "observation":
+                            Look.Examine(gameMap.roomArray[1, 0]);
+                            return;
+                        case "bay":
+                            Look.Examine(gameMap.roomArray[1, 1]);
+                            return;
+                        case "warehouse":
+                            Look.Examine(gameMap.roomArray[1, 2]);
+                            return;
+                        case "security":
+                            Look.Examine(gameMap.roomArray[2, 0]);
+                            return;
+                        case "gate":
+                            Look.Examine(gameMap.roomArray[2, 1]);
+                            return;
+                        case "office":
+                            Look.Examine(gameMap.roomArray[2, 2]);
+                            return;
+
                     }
                     break;
-                case "e":
-                    Move.Direction(Directions.Dir.Direction.e, player);
-                    if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+
+                // TAKE SUBJECT
+                case "take":
+                case "get":
+                    switch (_inputSubject)
                     {
-                        TurnUpdate(player);
-                        PlayerLocation.OnRoomEnter();
+                        case "key":
+                        case "card":
+                            Take.Get(key, player);
+                            return;
+                        case "gun":
+                            Take.Get(gun, player);
+                            return;
+                        default:
+                            Console.WriteLine(write.BadInput);
+                            break;
                     }
                     break;
-                case "s":
-                    Move.Direction(Directions.Dir.Direction.s, player);
-                    if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
+
+                // DROP SUBJECT
+                case "drop":
+                    switch (_inputSubject)
                     {
-                        TurnUpdate(player);
-                        PlayerLocation.OnRoomEnter();
+                        case "key":
+                        case "card":
+                            Take.Drop(key, player);
+                            return;
+                        case "gun":
+                            Take.Drop(gun, player);
+                            return;
+                        case "use":
+                            return;
+                        default:
+                            Console.WriteLine(write.BadInput);
+                            break;
                     }
                     break;
-                case "w":
-                    Move.Direction(Directions.Dir.Direction.w, player);
-                    if (PlayerLocation != player.CurrentRoom) // if the player successfully changed rooms
-                    {
-                        TurnUpdate(player);
-                        PlayerLocation.OnRoomEnter();
-                    }
-                    break;
+
+                // DEFAULT
                 default:
-                    Console.WriteLine("Can't understand this command!");
+                    Console.WriteLine(write.BadInput);
                     break;
+
             }
 
-            return;
 
         }
-
-        
     }
 }

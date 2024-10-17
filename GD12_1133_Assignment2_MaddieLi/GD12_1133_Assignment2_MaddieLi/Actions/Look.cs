@@ -1,4 +1,5 @@
 ﻿using GD12_1133_Assignment2_MaddieLi.Abstract;
+using GD12_1133_Assignment2_MaddieLi.People;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,48 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
 {
     internal class Look
     {
+        public void Inventory(Character character)
+        {
+            List<String> _inventory = new List<String>();
+
+            foreach (Item i in character.Contents)
+            {
+                _inventory.Add(i.Glance.ToString());
+
+            }
+
+            // ITEMS IN ROOM
+            if (_inventory!.Count == 0)
+            {
+                Console.WriteLine("You aren't holding anything.");
+            }
+            else
+            {
+                Console.Write("\nYou are holding ");
+
+                foreach (String i in _inventory)
+                {
+                    Console.Write(i.ToLower());
+                }
+
+                Console.WriteLine(".");
+            }
+        }
+
+        public void Examine(Item item)
+        {
+            Console.WriteLine(item.Look);
+        }
+
+        public void Examine(BaseCharacter character)
+        {
+            Console.WriteLine(character.Look);
+        }
+
+        public void Examine(Room room)
+        {
+            Describe(room);
+        }
 
         public void Describe(Room _targetRoom)
         {
@@ -42,7 +85,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             // prevents from writing player description when looking
             List<String> _roomContents = new List<String>();
 
-            foreach (Character i in _targetRoom.Inhabitants)
+            foreach (BaseCharacter i in _targetRoom.Inhabitants)
             {
                 if (i.Glance != "Yourself")
                 {

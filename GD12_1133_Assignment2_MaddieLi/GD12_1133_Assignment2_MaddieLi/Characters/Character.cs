@@ -10,7 +10,7 @@ namespace GD12_1133_Assignment2_MaddieLi.People
     using GD12_1133_Assignment2_MaddieLi.Abstract;
     using GD12_1133_Assignment2_MaddieLi.Abstract.Interfaces;
 
-    public class Combatant : Character, IInfo, ICanHold<Item>
+    public class Character : BaseCharacter, IInfo, ICanHold<Item>
     {
         // INFO
         public override string Name { get; set; }
@@ -25,7 +25,7 @@ namespace GD12_1133_Assignment2_MaddieLi.People
         public override int Health { get; set; }   // health
 
         // CONSTRUCTOR
-        public Combatant(string Name, string Glance, string Look, int Health, Room CurrentRoom, List<Item> Contents) : base()
+        public Character(string Name, string Glance, string Look, int Health, Room CurrentRoom, List<Item> Contents) : base()
         {
             this.Name = Name;
             this.Glance = Glance;

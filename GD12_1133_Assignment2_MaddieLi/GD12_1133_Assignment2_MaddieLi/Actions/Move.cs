@@ -15,11 +15,11 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
     {
         GameMap gameMap = new GameMap();
 
-        public void Direction(Directions.Dir.Direction dir, Character _targetChar)
+        public void Direction(Directions.Dir.Direction dir, BaseCharacter _targetChar)
         {
             // Console.WriteLine((int)dir);
             Room _currentRoom = _targetChar.CurrentRoom;
-            Room _newRoom = null; 
+            Room _newRoom = null; ; 
 
             int _currentRoomX = _currentRoom.XPos;
             int _currentRoomY = _currentRoom.YPos;

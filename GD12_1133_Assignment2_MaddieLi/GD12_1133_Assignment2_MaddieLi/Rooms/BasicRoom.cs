@@ -24,9 +24,10 @@ namespace GD12_1133_Assignment2_MaddieLi.Rooms
         public override bool HasBeenEntered { get; set; }
 
         // PROPERTIES
-        public virtual List<Character>? Inhabitants { get; set; } // list of items
+        public virtual List<BaseCharacter>? Inhabitants { get; set; } // list of items
 
         Look LookAt = new Look();
+
         public override void OnRoomEnter()
         {
             LookAt.Describe(this, HasBeenEntered);

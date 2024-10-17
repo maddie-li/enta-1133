@@ -23,7 +23,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         public abstract bool HasBeenEntered { get; set; }
 
         public bool[] _allowedDirections = new bool[4]; // existing directions
-        public List<Character> Inhabitants { get; set; } = new List<Character>(); // list of characters 
+        public List<BaseCharacter> Inhabitants { get; set; } = new List<BaseCharacter>(); // list of characters 
 
         public int XPos { get; set; } // positions in grid
         public int YPos { get; set; }
@@ -51,7 +51,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
             return _allowedDirections[(int)direction];
         }
 
-        public virtual Room CheckIsInRoom(Character character) // check if character is in room
+        public virtual Room CheckIsInRoom(BaseCharacter character) // check if character is in room
         {
             if (character.CurrentRoom == this)
             {
@@ -60,12 +60,6 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
 
             return null;
         }
-
-        public void AddItem(Item item) // add item to room
-        {
-            Contents!.Add(item);
-        }
-
 
         public void SetRooms(Room north, Room east, Room south, Room west) // creates rooms
         {
