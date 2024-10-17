@@ -11,26 +11,17 @@ namespace GD12_1133_Assignment2_MaddieLi.Items
 
     public class Weapon : Item
     {
-        public override string Name { get; set; } // name
-        public override string Glance { get; set; } // short description (known room description, object in inventory or location)
-        public override string Look { get; set; } // long description (new room description, examining object)
-
-        public override BaseRoom CurrentRoom {  get; set; }  
-
-        public override void Use(BaseItem? target = null)
-        {
-
-        }
+        public override string Name { get; set; }  // name
 
         // PROPERTIES
         public int Damage { get; set; }
 
         // CONSTRUCTOR
-        public Weapon(string name, string glance, string look, int damage, BaseRoom currentRoom)
-       : base(name, glance, look, currentRoom) 
+        public Weapon(string name, int damage)
+       : base(name, "", "", null!) 
         {
-            Look = look;
-            Damage = damage;
+            this.Name = name;
+            this.Damage = damage;
         }
     }
 

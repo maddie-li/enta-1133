@@ -10,7 +10,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
 {
     internal class Look
     {
-        public void Inventory(Player character)
+        public void Inventory(Character character)
         {
             List<String> _inventory = new List<String>(); // temporary list of strings for inventory
 

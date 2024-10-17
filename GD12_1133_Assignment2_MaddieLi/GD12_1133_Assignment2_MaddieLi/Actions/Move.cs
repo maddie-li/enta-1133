@@ -16,7 +16,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
     {
         GameMap gameMap = new GameMap();
 
-        public void Direction(Directions.Dir.Direction dir, Player _targetChar)
+        public void Direction(Directions.Dir.Direction dir, Character _targetChar)
         {
             BaseRoom _currentRoom = _targetChar.CurrentRoom;
             BaseRoom _newRoom = null!; 
@@ -64,7 +64,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             
         }
 
-        public void Room(BaseRoom _newRoom, Player _targetChar)
+        public void Room(BaseRoom _newRoom, Character _targetChar)
         {
             BaseRoom _currentRoom = _targetChar.CurrentRoom;
 

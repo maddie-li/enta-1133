@@ -11,7 +11,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Rooms
 {
     internal class CombatRoom : Room // CombatRoom has a random chance of spawning enemy to begin combat
     {
-        GameManager gameManager = new GameManager();
+        Combat combat = new Combat();
         Roller r = new Roller();
 
         int _oddsOfCombat = 3;
@@ -23,7 +23,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Rooms
             if (r.Roll(_oddsOfCombat) == _oddsOfCombat) // if combat is to begin
             {
                  Console.WriteLine("COMBAT TIME!");
-                gameManager.CombatSetup();
+                combat.CombatSetup();
 
             }
         }

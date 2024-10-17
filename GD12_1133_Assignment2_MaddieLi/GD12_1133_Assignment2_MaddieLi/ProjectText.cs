@@ -37,7 +37,6 @@ namespace GD12_1133_Assignment2_MaddieLi
                 x, examine / look at item
                 search / investigate room
                 grab, get, t, take / pick up item
-                drop / drop item
                 go, walk, move / go in a direction
             ";
 

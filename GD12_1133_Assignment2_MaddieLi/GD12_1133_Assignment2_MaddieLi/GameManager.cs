@@ -22,18 +22,26 @@ namespace GD12_1133_Assignment2_MaddieLi
     {
         // variables
         bool isGamePlaying = true;
-        public BaseRoom PlayerLocation;
 
         public string? rawString; // raw input
 
-        // objectvies variables
+        // objectives variables
         int Points = 0;
-        bool HasPickedUpRocket = false;
+
+        public static bool HasPickedUpRocket = false;
+
         bool HasPickedUpTape = false;
         bool HasPickedUpKey = false;
 
         // characters
-        public Player player;
+        public Character player;
+        public Character guard;
+
+        // player variables
+        public BaseRoom PlayerLocation;
+        public List<BaseItem> PlayerContents = new List<BaseItem>();
+        public int PlayerHealth = 0;
+
 
         // items
         public List<BaseItem> ItemsInGame = new List<BaseItem>();
@@ -88,6 +96,7 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             gameMap.CreateMap();
 
+            // CREATE ROOMS
             BaseRoom boat = gameMap.RoomSetup(0, 0, "Boat", "The way out is east.", "The boat you arrived in.");
             boat.CanExit(Dir.Direction.e);
 
@@ -121,7 +130,8 @@ namespace GD12_1133_Assignment2_MaddieLi
             BaseRoom office = gameMap.RoomSetup(2, 2, "Office", "The warehouse is north", "Lavishly decorated.");
             office.CanExit(Dir.Direction.n);
 
-            player = new Player(boat, new List<BaseItem> { });
+            // CREATE PLAYER
+            player = new Character("Player", "yourself", "It's you, the player", 100, boat, new List<BaseItem> { });
 
             StartGame(boat);
         }
@@ -151,11 +161,12 @@ namespace GD12_1133_Assignment2_MaddieLi
 
         }
 
-        public void TurnUpdate(Player player)
+        public void TurnUpdate(Character player)
         {
             // UPDATE PLAYER LOCATION
             PlayerLocation = player.CurrentRoom!;
 
+            // REFRES ITEMS IN ROOM
             player.CurrentRoom.Contents.Clear();
 
             foreach (BaseItem item in ItemsInGame)
@@ -166,7 +177,12 @@ namespace GD12_1133_Assignment2_MaddieLi
                 }
             }
 
-            // Console.WriteLine(player.CurrentRoom.Inhabitants.Count.ToString()); for testing
+            // UPDATE COMBATANT COPY
+            foreach (Item item in player.Contents)
+            {
+                PlayerContents.Add(item);
+            }
+            PlayerHealth = player.Health;
 
         }
 
@@ -600,7 +616,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "armory":
                             if (!HasPickedUpRocket) 
                             {
-                                rocket = new Weapon("Rocket launcher", "A rocket launcher", "A weapon you can use. Looks like it could do a lot of damage.", 20, gameMap.roomArray[0, 2]);
+                                rocket = new Item("Rocket launcher", "A rocket launcher", "A weapon you can use. Looks like it could do a lot of damage.", gameMap.roomArray[0, 2]);
                                 HasPickedUpRocket = true;
                                 ItemsInGame.Add(rocket);
                                 Console.WriteLine("Most of the weapons are concealed under tarps, but one catches your eye...");
@@ -663,25 +679,6 @@ namespace GD12_1133_Assignment2_MaddieLi
                     }
                     break;
 
-                // DROP SUBJECT
-                case "drop":
-                    switch (_inputSubject)
-                    {
-                        case "key":
-                        case "card":
-                            Take.Drop(key, player);
-                            return;
-                        case "rocket":
-                            Take.Drop(rocket, player);
-                            return;
-                        case "use":
-                            return;
-                        default:
-                            Console.WriteLine(write.BadInput);
-                            break;
-                    }
-                    break;
-
                 // DEFAULT
                 default:
                     Console.WriteLine(write.BadInput);
@@ -690,20 +687,6 @@ namespace GD12_1133_Assignment2_MaddieLi
             }
 
 
-        }
-
-        public void CombatSetup()
-        {
-            Combatant _player = new Combatant("Player", null!, null!, 100, null!, new List<BaseItem> { });
-            Combatant _enemy = new Combatant("Guard", null!, null!, 75, null!, new List<BaseItem> { });
-
-            CombatBegin(_player, _enemy);
-
-        }
-
-        public void CombatBegin(Combatant player, Combatant enemy)
-        {
-            Console.WriteLine($"{player.Name} vs. {enemy.Name}");
         }
 
         public void GameEnd(string outcome)

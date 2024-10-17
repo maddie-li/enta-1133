@@ -10,11 +10,6 @@
 
         public override BaseRoom CurrentRoom { get; set; } // long description (new room description, examining object)
 
-        public override void Use(BaseItem? target = null)
-        {
-
-        }
-
         // CONSTRUCTOR
         public Item(string Name, string Glance, string Look, BaseRoom CurrentRoom) : base(Name, Glance, Look, CurrentRoom)
         {

@@ -12,10 +12,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Abstract
         // INFO
         public abstract string Name { get; set; } // name
         public abstract string Glance { get; set; } // short description (known room description, object in inventory or location)
-        public abstract string Look { get; set; } // long description (new room description, examining object)
-
-        // FUNCTIONS
-        public abstract void Use(BaseItem? target = null); // use function
+        public abstract string Look { get; set; } // long description (new room description, examining object
 
         // PROPERTIES
         public abstract BaseRoom CurrentRoom { get; set; } // name
