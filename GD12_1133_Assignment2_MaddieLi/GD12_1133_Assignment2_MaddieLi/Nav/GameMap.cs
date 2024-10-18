@@ -31,6 +31,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Nav
             var _combatRoomCoords = new List<(int, int)>
             {
                 (0, 1),
+                (1,0),
                 (1, 1),
                 (2, 1),
                 (1, 2)

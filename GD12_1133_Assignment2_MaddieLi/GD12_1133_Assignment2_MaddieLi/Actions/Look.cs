@@ -26,7 +26,7 @@ namespace GD12_1133_Assignment2_MaddieLi.Actions
             }
             else // print each item
             {
-                Console.WriteLine("\nYou are holding: ");
+                Console.WriteLine("You are holding: ");
 
                 foreach (String i in _inventory)
                 {

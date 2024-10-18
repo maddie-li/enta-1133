@@ -12,16 +12,13 @@ namespace GD12_1133_Assignment2_MaddieLi.Characters
         // INFO
         public override string Name { get; set; } = "Player";
 
-        // CAN HOLD
-        public override List<BaseItem>? Contents { get; set; }
-
         // PROPERTIES
-        public override int Health { get; set; } = 100; //health
+        public override int Health { get; set; }  //health
 
-        public CombatantPlayer(List<BaseItem> contents)
-         : base("Player", 100, contents)
+        public CombatantPlayer(int health)
+         : base("Player", health)
         {
-            this.Contents = contents;
+            this.Health = health;
         }
 
     }

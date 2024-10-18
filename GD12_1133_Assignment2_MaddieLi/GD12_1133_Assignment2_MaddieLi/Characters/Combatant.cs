@@ -15,18 +15,17 @@ namespace GD12_1133_Assignment2_MaddieLi.Characters
         public override string Look { get; set; } = "";
 
         // CAN HOLD
-        public override List<BaseItem>? Contents { get; set; }
+        public override List<BaseItem>? Contents { get; set; } = null!;
         public override BaseRoom CurrentRoom { get; set; } = null!;
 
         // PROPERTIES
         public override int Health { get; set; } // health
 
-        public Combatant(string name, int health, List<BaseItem> contents)
-         : base(name, "", "", health, null!, contents)
+        public Combatant(string name, int health)
+         : base(name, "", "", health, null!, null!)
         {
             this.Name = name;
             this.Health = health;
-            this.Contents = contents;
         }
 
     }

@@ -23,15 +23,11 @@ namespace GD12_1133_Assignment2_MaddieLi
         // variables
         bool isGamePlaying = true;
 
-        public string? rawString; // raw input
+        public static string? rawString; // raw input
 
         // objectives variables
         int Points = 0;
-
-        public static bool HasPickedUpRocket = false;
-
-        bool HasPickedUpTape = false;
-        bool HasPickedUpKey = false;
+        int Turns = 0;
 
         // characters
         public Character player;
@@ -39,8 +35,16 @@ namespace GD12_1133_Assignment2_MaddieLi
 
         // player variables
         public BaseRoom PlayerLocation;
-        public List<BaseItem> PlayerContents = new List<BaseItem>();
-        public int PlayerHealth = 0;
+
+        public static bool HasPickedUpRocket = false;
+        public static bool HasPickedUpKey = false;
+        public static bool HasPickedUpTape = false;
+
+        public static bool HasDefeatedChief = false;
+        public static bool HasDefeatedDirector = false;
+
+        public static List<BaseItem> PlayerContents = new List<BaseItem>();
+        public static int PlayerHealth = 0;
 
 
         // items
@@ -48,9 +52,10 @@ namespace GD12_1133_Assignment2_MaddieLi
         public Item key;
         public Item rocket;
         public Item tape;
+        public Item knife;
+        public Item pager;
 
         // utility classes
-        ProjectText write = new ProjectText();
 
         GameMap gameMap = new GameMap();
         Look Look = new Look();
@@ -97,10 +102,10 @@ namespace GD12_1133_Assignment2_MaddieLi
             gameMap.CreateMap();
 
             // CREATE ROOMS
-            BaseRoom boat = gameMap.RoomSetup(0, 0, "Boat", "The way out is east.", "The boat you arrived in.");
+            BaseRoom boat = gameMap.RoomSetup(0, 0, "Boat", "The way out is east.", "You are in the cavernous hold of the boat you arrived in.");
             boat.CanExit(Dir.Direction.e);
 
-            BaseRoom dock = gameMap.RoomSetup(0, 1, "Dock", "There is a door in the east wall and the loading bay is south.", "A loading dock, exposed to the ocean.");
+            BaseRoom dock = gameMap.RoomSetup(0, 1, "Dock", "There is a door in a wall to the east and the loading bay is south.", "A loading dock, exposed to the ocean.");
             dock.CanExit(Dir.Direction.e);
             dock.CanExit(Dir.Direction.s);
 
@@ -111,13 +116,13 @@ namespace GD12_1133_Assignment2_MaddieLi
             observation.CanExit(Dir.Direction.e);
             observation.CanExit(Dir.Direction.s);
 
-            BaseRoom bay = gameMap.RoomSetup(1, 1, "Loading bay", "The dock is north, the warehouse east, the gate south, and the observation deck west.", "A busy central hub where people shuttle product in all four directions..");
+            BaseRoom bay = gameMap.RoomSetup(1, 1, "Loading bay", "The dock is north, the warehouse east, the gate south, and the observation deck west.", "A busy central hub where people shuttle product in every direction.");
             bay.CanExit(Dir.Direction.n);
             bay.CanExit(Dir.Direction.e);
             bay.CanExit(Dir.Direction.w);
             
 
-            BaseRoom warehouse = gameMap.RoomSetup(1, 2, "Warehouse", "The loading bay is west and the office is south.", "A cavernous warehouse.");
+            BaseRoom warehouse = gameMap.RoomSetup(1, 2, "Warehouse", "The loading bay is west and the office is south.", "A vast warehouse.");
             warehouse.CanExit(Dir.Direction.w);
             warehouse.CannotExit(Dir.Direction.s);
 
@@ -131,16 +136,22 @@ namespace GD12_1133_Assignment2_MaddieLi
             office.CanExit(Dir.Direction.n);
 
             // CREATE PLAYER
-            player = new Character("Player", "yourself", "It's you, the player", 100, boat, new List<BaseItem> { });
+            player = new Character("Player", "yourself", "It's you, the player", 50, boat, new List<BaseItem> {  });
+            PlayerHealth = player.Health;
+
+            // CREATE INVENTORY ITEMS
+            knife = new Item("knife", "a knife", "A weapon you can use. Looks like it could do some damage.", null!);
+            player.Contents.Add(knife);
+            pager = new Item("pager", "a one-way pager", "", null!);
+            player.Contents.Add(pager);
 
             StartGame(boat);
         }
-        
 
 
         public void StartGame(BaseRoom _startingRoom) // start game and loop
         {
-            Console.WriteLine(write.IntroText + "\n");
+            Console.WriteLine(ProjectText.IntroText + "\n");
 
             PlayerLocation = _startingRoom;
             TurnUpdate(player);
@@ -148,8 +159,9 @@ namespace GD12_1133_Assignment2_MaddieLi
 
             while (isGamePlaying)
             {
-                GetInput();
+                UseInput(GetInput());
                 TurnUpdate(player);
+                Turns += 1;
             }
 
         }
@@ -182,11 +194,11 @@ namespace GD12_1133_Assignment2_MaddieLi
             {
                 PlayerContents.Add(item);
             }
-            PlayerHealth = player.Health;
+            player.Health = PlayerHealth;
 
         }
 
-        public void GetInput() // read input
+        public static string GetInput()
         {
             // GET INPUT
             rawString = null;
@@ -201,6 +213,12 @@ namespace GD12_1133_Assignment2_MaddieLi
             // CLEAN UP INPUT
             string trimmed = rawString.Trim(); // trim whitespace
             string input = trimmed.ToLower(); // make lowercase
+
+            return input;
+        }
+
+        public void UseInput(string input) // read input
+        {
 
             // SPLIT STRING
             List<string> _inputList = input.Split(" ").ToList();
@@ -217,12 +235,12 @@ namespace GD12_1133_Assignment2_MaddieLi
             // SHORTEN INPUT
             for (int i = 0; i < _inputList.Count; i++)
             {
-                
+
                 if (Abbrv.ContainsKey(_inputList[i]))
                 {
                     _inputList[i] = Abbrv[_inputList[i]];
                 }
-                
+
             }
 
             int _wordsInInput = _inputList.Count;
@@ -239,7 +257,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                 {
                     // COMMANDS
                     case "h":
-                        Console.WriteLine(write.HelpText());
+                        Console.WriteLine(ProjectText.HelpText());
                         return;
                     case "l":
                         Look.Describe(PlayerLocation!);
@@ -248,8 +266,25 @@ namespace GD12_1133_Assignment2_MaddieLi
                         Look.Inventory(player);
                         return;
                     case "points":
+                        Console.WriteLine($"You have {Points} points.");
+                        return;
+                    case "turns":
+                        Console.WriteLine($"You have taken {Turns} turns.");
+                        return;
+                    case "health":
+                        Console.WriteLine($"You are at {PlayerHealth}hp.");
+                        return;
                     case "score":
                         Console.WriteLine($"You have {Points} points.");
+                        Console.WriteLine($"You have taken {Turns} turns.");
+                        return;
+                    case "hint":
+                        Console.WriteLine(ProjectText.PagerHint());
+                        return;
+                    case "z":
+                    case "wait":
+                    case "sleep":
+                        Console.WriteLine("You wait.");
                         return;
 
                     // MOVEMENT
@@ -327,10 +362,12 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 if (!HasPickedUpKey)
                                 {
                                     Console.WriteLine("You can't get into the office. It's locked.");
+                                    Console.ReadKey();
                                 }
                                 else
                                 {
                                     Console.WriteLine("You use the key card to unlock the office door.");
+                                    Console.ReadKey();
                                 }
                             }
                             if (PlayerLocation == gameMap.roomArray[1, 1]) // getting into gate
@@ -338,10 +375,12 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 if (!HasPickedUpTape)
                                 {
                                     Console.WriteLine("You shouldn't leave until you've retrieved the security tape.");
+                                    Console.ReadKey();
                                 }
                                 else
                                 {
                                     Console.WriteLine("You make your escape through the gate...");
+                                    Console.ReadKey();
                                     GameEnd("win");
 
                                 }
@@ -551,7 +590,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                             }
                             return;
                         default:
-                            Console.WriteLine(write.BadInput);
+                            Console.WriteLine((ProjectText.BadInput));
                             break;
 
                     }
@@ -574,8 +613,14 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "self":
                             Look.Examine(player);
                             return;
+                        case "knife":
+                            Look.Examine(knife);
+                            return;
+                        case "pager":
+                            Console.WriteLine(ProjectText.PagerHint());
+                            return;
                         default:
-                            Console.WriteLine(write.BadInput);
+                            Console.WriteLine((ProjectText.BadInput));
                             break;
 
                         // EXAMINE ROOM
@@ -620,7 +665,9 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 HasPickedUpRocket = true;
                                 ItemsInGame.Add(rocket);
                                 Console.WriteLine("Most of the weapons are concealed under tarps, but one catches your eye...");
+                                Console.ReadKey();
                                 GainPoint(1);
+                                Console.ReadKey();
                                 Console.WriteLine();
                             }
                             TurnUpdate(player);
@@ -629,13 +676,15 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "security":
                             if (!HasPickedUpKey)
                             {
-                                key = new Item("Key card", "A key card", "A key card. What room could you get into with this?", gameMap.roomArray[2, 0]);
+                                key = new Item("Key card", "A key card", "A key card.", gameMap.roomArray[2, 0]);
                                 Console.WriteLine(key.Look);
                                 HasPickedUpKey = true;
                                 gameMap.roomArray[1, 2].CanExit(Dir.Direction.s);
                                 ItemsInGame.Add(key);
                                 Console.WriteLine("In a drawer lies a key card... but what room could this get you into?");
+                                Console.ReadKey();
                                 GainPoint(2);
+                                Console.ReadKey();
                                 Console.WriteLine();
                             }
                             TurnUpdate(player);
@@ -647,6 +696,8 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 tape = new Item("Security tape", "A security tape", "The security tape.", gameMap.roomArray[2, 2]);
                                 HasPickedUpTape = true;
                                 ItemsInGame.Add(tape);
+                                Console.WriteLine("On the desk is the security tape that would have incriminated you, if it had been in use...\nTime to get out of here!");
+                                Console.ReadKey();
                             }
                             TurnUpdate(player);
                             Look.Describe(gameMap.roomArray[2, 2]);
@@ -674,14 +725,14 @@ namespace GD12_1133_Assignment2_MaddieLi
                             Take.Get(tape, player);
                             return;
                         default:
-                            Console.WriteLine(write.BadInput);
+                            Console.WriteLine(ProjectText.BadInput);
                             break;
                     }
                     break;
 
                 // DEFAULT
                 default:
-                    Console.WriteLine(write.BadInput);
+                    Console.WriteLine(ProjectText.BadInput);
                     break;
 
             }
