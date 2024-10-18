@@ -18,7 +18,9 @@ namespace GD12_1133_Assignment2_MaddieLi
         public Weapon _pistol = new Weapon("Pistol", 8);
         public Weapon _rifle = new Weapon("Rifle", 10);
         public Weapon _shotgun = new Weapon("Shotgun", 12);
-        public Weapon _rocket = new Weapon("Rocket launcher", 20);
+        public Weapon _rocket = new Weapon("Rocket Launcher", 20);
+
+        public Weapon _kit = new Weapon("Health Kit", 15);
 
         List<Weapon> _playerWeapons = new List<Weapon>();
         List<Weapon> _enemyWeapons = new List<Weapon>();
@@ -34,9 +36,15 @@ namespace GD12_1133_Assignment2_MaddieLi
             CombatantPlayer _player = new CombatantPlayer(GameManager.PlayerHealth);
 
             _playerWeapons.Add(_knife);
-            if (GameManager.HasPickedUpRocket)
+            _playerWeapons.Add(_kit);
+
+            if (GameManager.PlayerContents.Contains(GameManager.rocket))
             {
                 _playerWeapons.Add(_rocket);
+            }
+            if (GameManager.PlayerContents.Contains(GameManager.shotgun))
+            {
+                _playerWeapons.Add(_shotgun);
             }
 
             // ENEMY SETUP
@@ -95,12 +103,26 @@ namespace GD12_1133_Assignment2_MaddieLi
 
                 Console.ReadKey();
 
-                // results
-                Console.WriteLine($"\n{player.Name} did {_playerDamage} damage!\n{enemy.Name} did {_enemyDamage} damage!");
+                if (_playerSelection == _kit)
+                {
+                    // results
+                    Console.WriteLine($"\n{player.Name} healed {_playerDamage}hp!\n{enemy.Name} did {_enemyDamage} damage!");
+                    player.Health -= _enemyDamage;
+                    player.Health += _playerDamage;
+                }
+                else
+                {
+                    // results
+                    Console.WriteLine($"\n{player.Name} did {_playerDamage} damage!\n{enemy.Name} did {_enemyDamage} damage!");
 
-                player.Health -= _enemyDamage;
-                enemy.Health -= _playerDamage;  
-
+                    player.Health -= _enemyDamage;
+                    enemy.Health -= _playerDamage;
+                }
+               
+                if (player.Health <= 0)
+                {
+                    GameManager.GameEnd("lose");
+                }
             }
 
         }
@@ -108,7 +130,7 @@ namespace GD12_1133_Assignment2_MaddieLi
         public Weapon ChooseWeapon(CombatantPlayer player, List<Weapon> weaponslist)
         {
 
-            Weapon _weapon = null!;
+            Weapon _weapon = _kit;
 
             // print weapon list
             Console.WriteLine("\n" +
@@ -134,6 +156,15 @@ namespace GD12_1133_Assignment2_MaddieLi
                 case "use rocket launcher":
                 case "rocket launcher":
                     return _rocket;
+                case "use shotgun":
+                case "shotgun":
+                    return _shotgun;
+                case "health":
+                case "heal":
+                case "use health kit":
+                case "kit":
+                case "use kit":
+                    return _kit;
                 default:
                     Console.WriteLine("Invalid input! Try again.");
                     ChooseWeapon(player, weaponslist);

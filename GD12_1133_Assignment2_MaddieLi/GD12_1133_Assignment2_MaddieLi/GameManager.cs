@@ -26,8 +26,8 @@ namespace GD12_1133_Assignment2_MaddieLi
         public static string? rawString; // raw input
 
         // objectives variables
-        int Points = 0;
-        int Turns = 0;
+        static int Points = 0;
+        static int Turns = 0;
 
         // characters
         public Character player;
@@ -37,6 +37,7 @@ namespace GD12_1133_Assignment2_MaddieLi
         public BaseRoom PlayerLocation;
 
         public static bool HasPickedUpRocket = false;
+        public static bool HasPickedUpShotgun = false;
         public static bool HasPickedUpKey = false;
         public static bool HasPickedUpTape = false;
 
@@ -46,14 +47,15 @@ namespace GD12_1133_Assignment2_MaddieLi
         public static List<BaseItem> PlayerContents = new List<BaseItem>();
         public static int PlayerHealth = 0;
 
-
         // items
-        public List<BaseItem> ItemsInGame = new List<BaseItem>();
+        public static List<BaseItem> ItemsInGame = new List<BaseItem>();
         public Item key;
-        public Item rocket;
+        public static Item rocket;
         public Item tape;
         public Item knife;
+        public static Item shotgun;
         public Item pager;
+        public Item kit;
 
         // utility classes
 
@@ -72,6 +74,10 @@ namespace GD12_1133_Assignment2_MaddieLi
             { "help", "h" },
             { "inventory", "i" },
 
+            { "pick", "get" },
+
+            { "hp", "health" },
+
             // DIRECTION
             { "north", "n" },
             { "east", "e" },
@@ -79,21 +85,15 @@ namespace GD12_1133_Assignment2_MaddieLi
             { "west", "w" },
 
             // ITEMS
-            { "key card", "key" },
             { "card", "key" },
 
-            { "rocket launcher", "rocket" },
             { "launcher", "rocket" },
 
             { "security tape", "tape" },
 
-            // ROOMS
-            { "observation deck", "observation" },
-            { "loading bay", "bay" },
-
         };
 
-        string[] _articles = { "the", "at", "an", "a", "in", "to", "about", "who", "is", "what", "through", "towards" };
+        string[] _articles = { "the", "at", "an", "a", "in", "to", "about", "who", "is", "what", "through", "towards", "up" };
 
         public void SetUp()
         {
@@ -136,7 +136,7 @@ namespace GD12_1133_Assignment2_MaddieLi
             office.CanExit(Dir.Direction.n);
 
             // CREATE PLAYER
-            player = new Character("Player", "yourself", "It's you, the player", 50, boat, new List<BaseItem> {  });
+            player = new Character("Player", "yourself", "It's you, the player", 20, boat, new List<BaseItem> {  });
             PlayerHealth = player.Health;
 
             // CREATE INVENTORY ITEMS
@@ -144,6 +144,8 @@ namespace GD12_1133_Assignment2_MaddieLi
             player.Contents.Add(knife);
             pager = new Item("pager", "a one-way pager", "", null!);
             player.Contents.Add(pager);
+            kit = new Item("health kit", "a health kit", "A health kit, pretty sparse. Supplied by the agency.", null!);
+            player.Contents.Add(kit);
 
             StartGame(boat);
         }
@@ -162,11 +164,12 @@ namespace GD12_1133_Assignment2_MaddieLi
                 UseInput(GetInput());
                 TurnUpdate(player);
                 Turns += 1;
+                PlayerHealth += 1;
             }
 
         }
 
-        public void GainPoint(int _points) 
+        public static void GainPoint(int _points) 
         {
             Console.WriteLine($"+{_points} score!");
             Points += _points;
@@ -299,7 +302,10 @@ namespace GD12_1133_Assignment2_MaddieLi
                     case "key":
                     case "card":
                     case "rocket":
+                    case "shotgun":
                     case "player":
+                    case "kit":
+                    case "pager":
                     case "self":
                     case "guard":
                         _inputVerb = "look";
@@ -362,7 +368,6 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 if (!HasPickedUpKey)
                                 {
                                     Console.WriteLine("You can't get into the office. It's locked.");
-                                    Console.ReadKey();
                                 }
                                 else
                                 {
@@ -375,7 +380,6 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 if (!HasPickedUpTape)
                                 {
                                     Console.WriteLine("You shouldn't leave until you've retrieved the security tape.");
-                                    Console.ReadKey();
                                 }
                                 else
                                 {
@@ -609,12 +613,18 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "rocket":
                             Look.Examine(rocket);
                             return;
+                        case "shotgun":
+                            Look.Examine(shotgun);
+                            return;
                         case "player":
                         case "self":
                             Look.Examine(player);
                             return;
                         case "knife":
                             Look.Examine(knife);
+                            return;
+                        case "kit":
+                            Look.Examine(kit);
                             return;
                         case "pager":
                             Console.WriteLine(ProjectText.PagerHint());
@@ -661,7 +671,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "armory":
                             if (!HasPickedUpRocket) 
                             {
-                                rocket = new Item("Rocket launcher", "A rocket launcher", "A weapon you can use. Looks like it could do a lot of damage.", gameMap.roomArray[0, 2]);
+                                rocket = new Item("Rocket Launcher", "A rocket launcher", "A weapon you can use. Looks like it could do a lot of damage.", gameMap.roomArray[0, 2]);
                                 HasPickedUpRocket = true;
                                 ItemsInGame.Add(rocket);
                                 Console.WriteLine("Most of the weapons are concealed under tarps, but one catches your eye...");
@@ -683,7 +693,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 ItemsInGame.Add(key);
                                 Console.WriteLine("In a drawer lies a key card... but what room could this get you into?");
                                 Console.ReadKey();
-                                GainPoint(2);
+                                GainPoint(1);
                                 Console.ReadKey();
                                 Console.WriteLine();
                             }
@@ -696,6 +706,7 @@ namespace GD12_1133_Assignment2_MaddieLi
                                 tape = new Item("Security tape", "A security tape", "The security tape.", gameMap.roomArray[2, 2]);
                                 HasPickedUpTape = true;
                                 ItemsInGame.Add(tape);
+                                GainPoint(1);
                                 Console.WriteLine("On the desk is the security tape that would have incriminated you, if it had been in use...\nTime to get out of here!");
                                 Console.ReadKey();
                             }
@@ -721,6 +732,9 @@ namespace GD12_1133_Assignment2_MaddieLi
                         case "rocket":
                             Take.Get(rocket, player);
                             return;
+                        case "shotgun":
+                            Take.Get(shotgun, player);
+                            return;
                         case "tape":
                             Take.Get(tape, player);
                             return;
@@ -740,19 +754,27 @@ namespace GD12_1133_Assignment2_MaddieLi
 
         }
 
-        public void GameEnd(string outcome)
+        public static void GameEnd(string outcome)
         {
+            Console.WriteLine("\nGAME OVER\n");
+
             switch (outcome)
             {
                 case "win":
-                    Console.WriteLine("Congratulations! You won! Yay!");
+                    Console.WriteLine("Congratulations!\nYou eliminated the Executive Director and you escaped with the security tapes!");
                     break;
                 case "lose":
-                    Console.WriteLine("Womp womp. You lost.");
+                    Console.WriteLine("You died in combat. Womp womp.");
                     break;
             }
 
-            Console.WriteLine($"You finished the game with {Points} points.");
+            Console.WriteLine($"\n\nYou finished the game with {Points}/5 possible points.");
+            Console.WriteLine($"\nIt took you {Turns} turns.");
+
+            Console.WriteLine("\n\nPress any key to exit.");
+            Console.ReadKey();
+            Environment.Exit(0);    
+
         }
     }
 }
